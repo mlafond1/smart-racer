@@ -1003,6 +1003,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 517c50f5302641649a3f0c6c17c340c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxSpeed: 30
+  torqueSpeed: 25
+  driftPourcentage: 0.95
 --- !u!61 &704447476
 BoxCollider2D:
   m_ObjectHideFlags: 0
