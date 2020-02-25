@@ -6,7 +6,7 @@ public class CarController : MonoBehaviour
 {
 
     [SerializeField]
-    float maxSpeed = 30f;
+    public float maxSpeed = 30f;
     [SerializeField]
     float torqueSpeed = 25f;
     [SerializeField]
@@ -35,7 +35,7 @@ public class CarController : MonoBehaviour
 
     void FixedUpdate()
     {
-        float percentOfMaxSpeed = rb.velocity.magnitude/maxSpeed;
+        float percentOfMaxSpeed = PercentOfMaxSpeed();
 
         rb.AddTorque(-horizontalAxis * torqueSpeed * Time.deltaTime * percentOfMaxSpeed);
         
@@ -44,11 +44,20 @@ public class CarController : MonoBehaviour
         rb.angularVelocity = 0.0f;
     }
 
-    private Vector2 ForwardVelocity(){
+    Vector2 ForwardVelocity(){
         return transform.up * Vector2.Dot(rb.velocity, transform.up);
     }
 
-    private Vector2 RightVelocity(){
+    Vector2 RightVelocity(){
         return transform.right * Vector2.Dot(rb.velocity, transform.right);
     }
+
+    public float CurrentSpeed(){
+        return Vector2.Dot(rb.velocity, transform.up);
+    }
+
+    public float PercentOfMaxSpeed(){
+        return rb.velocity.magnitude/maxSpeed;
+    }
+
 }
