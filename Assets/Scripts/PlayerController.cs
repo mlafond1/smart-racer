@@ -14,6 +14,6 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate(){
         if(Input.GetButton("Accelerate")) carController.Accelerate();
         else if(Input.GetButton("Break")) carController.Brake();
-        carController.SetAxis(Input.GetAxis("Horizontal"));
+        carController.Steer(Input.GetAxis("Horizontal"));
     }
 }

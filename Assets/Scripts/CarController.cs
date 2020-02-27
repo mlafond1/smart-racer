@@ -6,30 +6,32 @@ public class CarController : MonoBehaviour
 {
 
     [SerializeField]
-    public float maxSpeed = 30f;
+    float maxSpeed = 30f;
     [SerializeField]
     float torqueSpeed = 25f;
     [SerializeField]
     float driftPourcentage = 0.75f;
 
     float horizontalAxis = 0f;
+    float currentMaxSpeed = 0f;
 
     Rigidbody2D rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        SetOnTrack();
     }
 
     public void Accelerate(){
-        rb.AddForce(transform.up * maxSpeed);
+        rb.AddForce(transform.up * currentMaxSpeed);
     }
 
     public void Brake(){
-        rb.AddForce(transform.up * -maxSpeed/2);
+        rb.AddForce(transform.up * -currentMaxSpeed/2);
     }
 
-    public void SetAxis(float horizontalAxis){
+    public void Steer(float horizontalAxis){
         this.horizontalAxis = horizontalAxis;
     }
 
@@ -37,7 +39,8 @@ public class CarController : MonoBehaviour
     {
         float percentOfMaxSpeed = PercentOfMaxSpeed();
 
-        rb.AddTorque(-horizontalAxis * torqueSpeed * Time.deltaTime * percentOfMaxSpeed);
+        bool isMovingForward = CurrentSpeed() > 0;
+        rb.AddTorque( (isMovingForward? -1 : 1) * horizontalAxis * torqueSpeed * Time.deltaTime * percentOfMaxSpeed);
         
         float newDriftPourcentage = driftPourcentage * percentOfMaxSpeed;
         rb.velocity = ForwardVelocity() + (RightVelocity() * newDriftPourcentage);
@@ -58,6 +61,14 @@ public class CarController : MonoBehaviour
 
     public float PercentOfMaxSpeed(){
         return rb.velocity.magnitude/maxSpeed;
+    }
+
+    public void SetOnTrack(){
+        currentMaxSpeed = maxSpeed;
+    }
+
+    public void SetOffTrack(){
+        currentMaxSpeed = maxSpeed/3f;
     }
 
 }
