@@ -4,29 +4,8 @@
         {
             "name": "Menu",
             "id": "b12b4e31-61b4-4725-8cff-4a5dbcf1f0f0",
-            "actions": [
-                {
-                    "name": "Submit",
-                    "type": "Button",
-                    "id": "654192a8-2261-4953-af2f-4e4f5fbf0565",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": ""
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "ce5a9fc8-0687-4ba2-a34e-4fcd4f9bd7e0",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Submit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": []
