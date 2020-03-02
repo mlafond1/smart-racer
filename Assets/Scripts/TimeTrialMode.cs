@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; // Peut ne pas être reconnu dans l'IDE, mais le jeu fonctionne... (et Text)
@@ -18,13 +19,15 @@ public class TimeTrialMode : MonoBehaviour
     Text timePanel;
     Text countdownPanel;
     Text playerLapsPanel;
+    Text speedPanel;
 
     void Start()
     {
         timePanel = GameObject.Find("TimeText").GetComponent<Text>();
         countdownPanel = GameObject.Find("CountdownText").GetComponent<Text>();
         playerLapsPanel = GameObject.Find("LapsText").GetComponent<Text>();
-        
+        speedPanel = GameObject.Find("SpeedText").GetComponent<Text>();
+
         checkpoints = new List<Collider2D>(GameObject.Find("RaceCheckpoints").GetComponentsInChildren<Collider2D>());
         finishLine = GameObject.Find("FinishLine").GetComponent<Collider2D>();
         // met la ligne d'arrivée à la fin de la liste
@@ -47,6 +50,7 @@ public class TimeTrialMode : MonoBehaviour
 
     void Update(){
         DisplayRaceTime();
+        DisplayPlayerSpeed();
     }
 
     void FixedUpdate(){
@@ -100,6 +104,10 @@ public class TimeTrialMode : MonoBehaviour
         float secondsAndMillis = raceTime - ((float)minutes*60f);
         timePanel.text = string.Format("Time: {0:00}:{1:00.000}", minutes, secondsAndMillis);
         raceTime += Time.deltaTime;
+    }
+
+    void DisplayPlayerSpeed(){
+        speedPanel.text = string.Format("Speed: {0:0.0} us", playerCar.CurrentSpeed());
     }
 
     private IEnumerator Countdown() {
