@@ -14,7 +14,7 @@ public class Trace : MonoBehaviour
      * Affichage du tracé dans l'éditeur
      * Seulement lorsque AI_Checkpoints est sélectionné
      */
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         //Couleur de la ligne
         Gizmos.color = couleurLigne;
