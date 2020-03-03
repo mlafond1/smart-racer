@@ -83,10 +83,10 @@ public class TimeTrialMode : MonoBehaviour
             //TODO Terminer la course/jeu après le dernier tour
             
             // temporairement...
-            countdownPanel.text = "Terminé!";
-            countdownPanel.enabled = true;
             car.enabled = false;
             if(car.Equals(playerCar)){
+                countdownPanel.text = "Terminé!";
+                countdownPanel.enabled = true;
                 this.enabled = false; // Arrêter le temps
                 ToggleCars(false); // Arrêter les véhicules
             }
