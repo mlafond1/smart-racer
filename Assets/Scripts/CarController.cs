@@ -12,7 +12,7 @@ public class CarController : MonoBehaviour
     [SerializeField]
     float driftPourcentage = 0.75f;
 
-    float horizontalAxis = 0f;
+    public float horizontalAxis = 0f;
     float currentMaxSpeed = 0f;
 
     Rigidbody2D rb;
@@ -45,6 +45,10 @@ public class CarController : MonoBehaviour
         float newDriftPourcentage = driftPourcentage * percentOfMaxSpeed;
         rb.velocity = ForwardVelocity() + (RightVelocity() * newDriftPourcentage);
         rb.angularVelocity = 0.0f;
+
+        //DEBUG INFO - À ENLEVER        
+        Debug.Log("Axe Steer");
+        Debug.Log(horizontalAxis.ToString());
     }
 
     Vector2 ForwardVelocity(){

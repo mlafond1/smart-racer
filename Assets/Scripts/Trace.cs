@@ -11,7 +11,8 @@ public class Trace : MonoBehaviour
     private List<Transform> noeuds = new List<Transform>();
 
     /**
-     * Affichage du tracé dans l'éditeur 
+     * Affichage du tracé dans l'éditeur
+     * Seulement lorsque AI_Checkpoints est sélectionné
      */
     void OnDrawGizmosSelected()
     {

@@ -1391,7 +1391,7 @@ Camera:
   far clip plane: 999.84
   field of view: 26.991467
   orthographic: 1
-  orthographic size: 13.88
+  orthographic size: 9.52
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1468,6 +1468,7 @@ MonoBehaviour:
   maxSpeed: 30
   torqueSpeed: 25
   driftPourcentage: 0.95
+  horizontalAxis: 0
 --- !u!61 &704447476
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2338,6 +2339,7 @@ GameObject:
   - component: {fileID: 1328192796}
   - component: {fileID: 1328192795}
   - component: {fileID: 1328192794}
+  - component: {fileID: 1328192798}
   m_Layer: 0
   m_Name: IA_1
   m_TagString: Untagged
@@ -2374,6 +2376,7 @@ MonoBehaviour:
   maxSpeed: 30
   torqueSpeed: 25
   driftPourcentage: 0.95
+  horizontalAxis: 0
 --- !u!61 &1328192795
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2471,6 +2474,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1328192798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328192792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bfccc87217c3984ca4965fcf14f7219, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trace: {fileID: 1900657696}
+  maxSteerAngle: 45
 --- !u!1 &1343160665
 GameObject:
   m_ObjectHideFlags: 0
