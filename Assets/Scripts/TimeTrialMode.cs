@@ -88,6 +88,7 @@ public class TimeTrialMode : MonoBehaviour
             car.enabled = false;
             if(car.Equals(playerCar)){
                 this.enabled = false; // Arrêter le temps
+                ToggleCars(false); // Arrêter les véhicules
             }
         } else {
             RefreshLapsPanel();
