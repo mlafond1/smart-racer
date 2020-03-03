@@ -42,9 +42,17 @@ public class VehiculeIA : MonoBehaviour
 
         //Application de l'angle au steer du carController
         carController.horizontalAxis = newSteer;
+        //carController.Steer(newSteer);
 
         //Accélération du véhicule
         carController.Accelerate();
+
+        //Aller au prochain noeud
+        Collider2D carCollider = carController.gameObject.GetComponent<Collider2D>();
+        Collider2D noeudCourantCollider = noeuds[noeudCourant].gameObject.GetComponent<Collider2D>();
+        if(carCollider.IsTouching(noeudCourantCollider)){
+            noeudCourant = (noeudCourant+1) % noeuds.Count;
+        }
     }
 
 }

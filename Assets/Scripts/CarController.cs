@@ -24,15 +24,22 @@ public class CarController : MonoBehaviour
     }
 
     public void Accelerate(){
+        if(!this.enabled) return;
         rb.AddForce(transform.up * currentMaxSpeed);
     }
 
     public void Brake(){
+        if(!this.enabled) return;
         rb.AddForce(transform.up * -currentMaxSpeed/2);
     }
 
     public void Steer(float horizontalAxis){
-        this.horizontalAxis = horizontalAxis;
+        if(horizontalAxis > 1) 
+            this.horizontalAxis = 1;
+        else if(horizontalAxis < -1) 
+            this.horizontalAxis = -1;
+        else 
+            this.horizontalAxis = horizontalAxis;
     }
 
     void FixedUpdate()

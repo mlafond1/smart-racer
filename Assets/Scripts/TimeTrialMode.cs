@@ -87,7 +87,6 @@ public class TimeTrialMode : MonoBehaviour
             countdownPanel.enabled = true;
             car.enabled = false;
             if(car.Equals(playerCar)){
-                car.gameObject.GetComponent<PlayerController>().enabled = false;
                 this.enabled = false; // Arrêter le temps
             }
         } else {
@@ -132,8 +131,6 @@ public class TimeTrialMode : MonoBehaviour
     void ToggleCars(bool activate){
         foreach (CarController car in cars){
             car.enabled = activate;
-            PlayerController player = car.gameObject.GetComponent<PlayerController>();
-            if(player != null) player.enabled = activate;
         }
     }
 
