@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,6 +41,9 @@ public class VehiculeIA : MonoBehaviour
         Vector3 relativeVector = transform.InverseTransformPoint(noeuds[noeudCourant].position);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
 
+        //Ajustement du virage
+        newSteer = AjusterVirage(newSteer);
+
         //Application de l'angle au steer du carController
         //carController.horizontalAxis = newSteer;
         carController.Steer(newSteer);
@@ -55,4 +59,19 @@ public class VehiculeIA : MonoBehaviour
         }
     }
 
+    private float AjusterVirage(float newSteer)
+    {
+        if(InRange(newSteer, -.1f, .1f)) newSteer = 0;
+        else if(InRange(newSteer, -.5f, .5f)) newSteer = .05f * Mathf.Sign(newSteer);
+        else if(InRange(newSteer, -1f, 1f)) newSteer = .125f * Mathf.Sign(newSteer);
+        else if(InRange(newSteer, -1.5f, 1.5f)) newSteer = .25f * Mathf.Sign(newSteer);
+        else if(InRange(newSteer, -2f, 2f)) newSteer = .5f * Mathf.Sign(newSteer);
+
+        return newSteer;
+    }
+
+    //Utilitaire
+    private bool InRange(float value, float min, float max){
+        return min <= value && value <= max;
+    }
 }
