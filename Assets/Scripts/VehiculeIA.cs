@@ -41,8 +41,8 @@ public class VehiculeIA : MonoBehaviour
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
 
         //Application de l'angle au steer du carController
-        carController.horizontalAxis = newSteer;
-        //carController.Steer(newSteer);
+        //carController.horizontalAxis = newSteer;
+        carController.Steer(newSteer);
 
         //Accélération du véhicule
         carController.Accelerate();
