@@ -30,6 +30,12 @@ public class MenuPause : MonoBehaviour
         partieEnPause = false;
     }
 
+    public void Recommencer(){
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+        Continuer();
+    }
+
     void Pauser()
     {
         menuPauseUI.SetActive(true);
