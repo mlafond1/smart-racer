@@ -9,19 +9,19 @@ public class TimeTrialMode : MonoBehaviour
     int numberOfLaps = 3;
     float raceTime = 0f;
 
-    Collider2D finishLine;
-    List<Collider2D> checkpoints;
+    protected Collider2D finishLine;
+    protected List<Collider2D> checkpoints;
     
-    CarController playerCar;
-    List<CarController> cars;
-    Dictionary<CarController, CarRaceInfo> raceInfos;
+    protected CarController playerCar;
+    protected List<CarController> cars;
+    protected Dictionary<CarController, CarRaceInfo> raceInfos;
 
     Text timePanel;
     Text countdownPanel;
     Text playerLapsPanel;
     Text speedPanel;
 
-    void Start()
+    protected virtual void Start()
     {
         timePanel = GameObject.Find("TimeText").GetComponent<Text>();
         countdownPanel = GameObject.Find("CountdownText").GetComponent<Text>();
@@ -48,12 +48,12 @@ public class TimeTrialMode : MonoBehaviour
         StartCoroutine("Countdown");
     }
 
-    void Update(){
+    protected virtual void Update(){
         DisplayRaceTime();
         DisplayPlayerSpeed();
     }
 
-    void FixedUpdate(){
+    protected virtual void FixedUpdate(){
         TrackLapsForCars();
     }
 
@@ -84,6 +84,7 @@ public class TimeTrialMode : MonoBehaviour
             
             // temporairement...
             car.enabled = false;
+            info.FinalRaceTime = raceTime;
             if(car.Equals(playerCar)){
                 countdownPanel.text = "Terminé!";
                 countdownPanel.enabled = true;

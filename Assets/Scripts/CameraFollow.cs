@@ -12,6 +12,8 @@ public class CameraFollow : MonoBehaviour
     private CarController carController;
     private List<CarController> cars;
 
+    Vector3 offset = new Vector3(0,0, -10); // La caméra doit être au dessus du véhicule pour le voir
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,9 +32,8 @@ public class CameraFollow : MonoBehaviour
         carIndex = (carIndex+1) % cars.Count;
         carController = cars[carIndex];
         transform.SetParent(carController.gameObject.transform);
-        transform.position = transform.parent.position;
+        transform.position = transform.parent.position + offset;
         transform.rotation = transform.parent.rotation;
-        Debug.Log("Switched to " + carIndex);
     }
 
     void Update(){
@@ -48,8 +49,7 @@ public class CameraFollow : MonoBehaviour
 
         // Quand le véhicule avance, la caméra est devant le véhicule, derrière quand il recule
         Vector3 cameraPositionRelativeToCar = (isCarMovingForward ? 1 : -1) * distanceAhead * percentOfMaxSpeed * transform.up;
-        Vector3 offset = new Vector3(0,0, -10); // La caméra doit être au dessus du véhicule pour le voir
-
+        
         transform.position = transform.parent.position + cameraPositionRelativeToCar + offset;
     }
 }
