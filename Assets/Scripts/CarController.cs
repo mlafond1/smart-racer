@@ -44,13 +44,9 @@ public class CarController : MonoBehaviour
 
     void FixedUpdate()
     {
-        float percentOfMaxSpeed = PercentOfMaxSpeed();
-
-        bool isMovingForward = CurrentSpeed() > 0;
-        //rb.AddTorque( (isMovingForward? -1 : 1) * horizontalAxis * torqueSpeed * Time.deltaTime * percentOfMaxSpeed);
         rb.rotation -= CurrentSpeed() * horizontalAxis * torqueSpeed * Time.deltaTime;
 
-        float newDriftPourcentage = driftPourcentage * percentOfMaxSpeed;
+        float newDriftPourcentage = driftPourcentage * PercentOfMaxSpeed();
         rb.velocity = ForwardVelocity() + (RightVelocity() * newDriftPourcentage);
         rb.angularVelocity = 0.0f;
     }
