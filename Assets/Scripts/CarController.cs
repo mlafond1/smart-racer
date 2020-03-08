@@ -8,9 +8,9 @@ public class CarController : MonoBehaviour
     [SerializeField]
     float maxSpeed = 30f;
     [SerializeField]
-    float torqueSpeed = 25f;
+    float torqueSpeed = 6f;
     [SerializeField]
-    float driftPourcentage = 0.75f;
+    float driftPourcentage = 0.95f;
 
     public float horizontalAxis = 0f; // TODO remettre private
     float currentMaxSpeed = 0f;
@@ -30,7 +30,7 @@ public class CarController : MonoBehaviour
 
     public void Brake(){
         if(!this.enabled) return;
-        rb.AddForce(transform.up * -currentMaxSpeed/2);
+        rb.AddForce(transform.up * -currentMaxSpeed/1.5f);
     }
 
     public void Steer(float horizontalAxis){
@@ -47,8 +47,9 @@ public class CarController : MonoBehaviour
         float percentOfMaxSpeed = PercentOfMaxSpeed();
 
         bool isMovingForward = CurrentSpeed() > 0;
-        rb.AddTorque( (isMovingForward? -1 : 1) * horizontalAxis * torqueSpeed * Time.deltaTime * percentOfMaxSpeed);
-        
+        //rb.AddTorque( (isMovingForward? -1 : 1) * horizontalAxis * torqueSpeed * Time.deltaTime * percentOfMaxSpeed);
+        rb.rotation -= CurrentSpeed() * horizontalAxis * torqueSpeed * Time.deltaTime;
+
         float newDriftPourcentage = driftPourcentage * percentOfMaxSpeed;
         rb.velocity = ForwardVelocity() + (RightVelocity() * newDriftPourcentage);
         rb.angularVelocity = 0.0f;
