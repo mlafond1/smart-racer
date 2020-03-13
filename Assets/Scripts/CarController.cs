@@ -14,7 +14,7 @@ public class CarController : MonoBehaviour
 
     public float horizontalAxis = 0f; // TODO remettre private
     float currentMaxSpeed = 0f;
-    public Collider2D checkpoint = null;//TODO remettre private
+    public Collider2D respawnpoint = null;//TODO remettre private
 
     Rigidbody2D rb;
 
@@ -76,11 +76,11 @@ public class CarController : MonoBehaviour
         currentMaxSpeed = maxSpeed/3f;
     }
 
-    public void SetCheckpoint(Collider2D newCheckpoint){
-        this.checkpoint = newCheckpoint;
+    public void SetRespawnpoint(Collider2D newRespawnpoint){
+        this.respawnpoint = newRespawnpoint;
     }
 
     public void Respawn(){
-        this.transform.position = this.checkpoint.transform.position;
+        this.transform.position = this.respawnpoint.transform.position;
     }
 }

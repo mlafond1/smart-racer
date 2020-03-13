@@ -40,7 +40,8 @@ public class TimeTrialMode : MonoBehaviour
         foreach (CarController car in cars){
             Collider2D carCollider = car.gameObject.GetComponent<Collider2D>();
             CarRaceInfo info = new CarRaceInfo(carCollider, checkpoints[0]);
-            car.SetCheckpoint(checkpoints[checkpoints.Count - 1]);
+            //Au debut le premier respawnpoint est la ligne d'arrivée
+            car.SetRespawnpoint(checkpoints[checkpoints.Count - 1]);
             raceInfos.Add(car, info);
         }
         playerCar = GameObject.FindObjectOfType<PlayerController>().gameObject.GetComponent<CarController>();
@@ -66,19 +67,19 @@ public class TimeTrialMode : MonoBehaviour
             if(info.carCollider.IsTouching(info.NextCheckpoint)){
                 ProceedToNextCheckpoint(car, info);
             }
-            Debug.DrawLine(car.transform.position, car.checkpoint.transform.position, Color.blue);
+            Debug.DrawLine(car.transform.position, car.respawnpoint.transform.position, Color.blue);
         }
     }
 
     void ProceedToNextCheckpoint(CarController car, CarRaceInfo info){
-        car.SetCheckpoint(info.NextCheckpoint);
+        //TODO refactor CarRaceInfo -- attribut de CarController
+        car.SetRespawnpoint(info.NextCheckpoint);
         ++info.numberOfCheckpoints;
         if(info.NextCheckpoint.Equals(finishLine)){
             ProceedToNextLap(car, info);
         }
         // Il faut que les checkpoints soient dans l'ordre dans l'éditeur!
         info.NextCheckpoint = checkpoints[info.numberOfCheckpoints];
-        //TODO refactor CarRaceInfo -- attribut de CarController
     }
 
     void ProceedToNextLap(CarController car, CarRaceInfo info){
