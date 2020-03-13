@@ -11,7 +11,7 @@ public class TimeTrialMode : MonoBehaviour
 
     protected Collider2D finishLine;
     protected List<Collider2D> checkpoints;
-    
+    protected List<Obstacle> obstacles;
     protected CarController playerCar;
     protected List<CarController> cars;
     protected Dictionary<CarController, CarRaceInfo> raceInfos;
@@ -29,6 +29,7 @@ public class TimeTrialMode : MonoBehaviour
         speedPanel = GameObject.Find("SpeedText").GetComponent<Text>();
 
         checkpoints = new List<Collider2D>(GameObject.Find("RaceCheckpoints").GetComponentsInChildren<Collider2D>());
+        obstacles = new List<Obstacle>(GameObject.Find("piste").GetComponentsInChildren<Obstacle>());
         finishLine = GameObject.Find("FinishLine").GetComponent<Collider2D>();
         // met la ligne d'arrivée à la fin de la liste
         checkpoints.Remove(finishLine);
@@ -39,6 +40,7 @@ public class TimeTrialMode : MonoBehaviour
         foreach (CarController car in cars){
             Collider2D carCollider = car.gameObject.GetComponent<Collider2D>();
             CarRaceInfo info = new CarRaceInfo(carCollider, checkpoints[0]);
+            car.SetCheckpoint(checkpoints[checkpoints.Count - 1]);
             raceInfos.Add(car, info);
         }
         playerCar = GameObject.FindObjectOfType<PlayerController>().gameObject.GetComponent<CarController>();
@@ -64,16 +66,19 @@ public class TimeTrialMode : MonoBehaviour
             if(info.carCollider.IsTouching(info.NextCheckpoint)){
                 ProceedToNextCheckpoint(car, info);
             }
+            Debug.DrawLine(car.transform.position, car.checkpoint.transform.position, Color.blue);
         }
     }
 
     void ProceedToNextCheckpoint(CarController car, CarRaceInfo info){
+        car.SetCheckpoint(info.NextCheckpoint);
         ++info.numberOfCheckpoints;
         if(info.NextCheckpoint.Equals(finishLine)){
             ProceedToNextLap(car, info);
         }
         // Il faut que les checkpoints soient dans l'ordre dans l'éditeur!
         info.NextCheckpoint = checkpoints[info.numberOfCheckpoints];
+        //TODO refactor CarRaceInfo -- attribut de CarController
     }
 
     void ProceedToNextLap(CarController car, CarRaceInfo info){
