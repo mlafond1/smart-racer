@@ -15,6 +15,8 @@ public class CarController : MonoBehaviour
     public float horizontalAxis = 0f; // TODO remettre private
     float currentMaxSpeed = 0f;
 
+    Item[] items = new Item[2];
+
     Rigidbody2D rb;
 
     void Awake()
@@ -40,6 +42,15 @@ public class CarController : MonoBehaviour
             this.horizontalAxis = -1;
         else 
             this.horizontalAxis = horizontalAxis;
+    }
+
+    public void SetItem(int index, Item item){
+        items[index] = item;
+    }
+
+    public void UseItem(int index){
+        if(!this.enabled) return;
+        items[index].Use();
     }
 
     void FixedUpdate()
