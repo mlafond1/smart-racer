@@ -39,13 +39,13 @@ public class VehiculeIA : MonoBehaviour
     private void UtiliserObjets(){
         Item itemOffensif = carController.GetItem(0);
         Item itemDefensif = carController.GetItem(1);
-        if(itemOffensif.isReady){
+        if(itemOffensif != null && itemOffensif.isReady){
             // Temp vise vers joueur
             Vector3 playerPosition = GameObject.FindObjectOfType<PlayerController>().transform.position;
             carController.Aim(playerPosition);
             carController.UseItem(0);
         }
-        if(itemDefensif.isReady){
+        if(itemDefensif != null && itemDefensif.isReady){
             List<ItemEffect> objetsActifs = new List<ItemEffect>(GameObject.FindObjectsOfType<ItemEffect>());
             foreach(ItemEffect effect in objetsActifs){
                 // Si l'effet est d'un autre propriétaire

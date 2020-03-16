@@ -30,6 +30,10 @@ public abstract class Item {
         return LoadItems.GetItemPrefab(Name);
     }
 
+    public Sprite GetSprite(){
+        return LoadItems.GetItemPrefab(Name)?.GetComponent<SpriteRenderer>()?.sprite;
+    }
+
     protected GameObject GetInstantiatedPrefab(){
         Vector3 position = Owner.transform.position;
         Quaternion rotation = Owner.transform.rotation;
