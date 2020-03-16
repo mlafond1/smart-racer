@@ -12,8 +12,14 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update(){
-        if(Input.GetKeyDown(KeyCode.Mouse0)) carController.UseItem(0);
-        if(Input.GetKeyDown(KeyCode.Mouse1)) carController.UseItem(1);
+        if(Input.GetKeyDown(KeyCode.Mouse0)){
+            carController.Aim(GetMousePosition());
+            carController.UseItem(0);
+        } 
+        if(Input.GetKeyDown(KeyCode.Mouse1)){
+            carController.Aim(GetMousePosition());
+            carController.UseItem(1);
+        }
     }
 
     void FixedUpdate(){
@@ -21,4 +27,11 @@ public class PlayerController : MonoBehaviour
         else if(Input.GetButton("Break")) carController.Brake();
         carController.Steer(Input.GetAxis("Horizontal"));
     }
+
+    private Vector3 GetMousePosition(){
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.z = 0;
+        return mousePosition;
+    }
+
 }

@@ -5,25 +5,20 @@ using UnityEngine;
 
 public class ShieldItem : Item {
 
-    public int Duration{get;set;}
+    public float Duration{get;set;}
 
     public ShieldItem(CarController Owner) : base(Owner) {
         Name = "shield";
-        Cooldown = 10;
-        Duration = 5;
+        Cooldown = 6;
+        Duration = 3;
     }
 
     protected override void Active(){
-        // Creer effet bouclier
-        GameObject shield = GetInstantiatedPrefab();
-        shield.transform.SetParent(Owner.transform);
-        // Garder actif pour Duration secondes
-        Owner.StartCoroutine(WaitDuration(shield));
-    }
+        GameObject shieldObject = GetInstantiatedPrefab();
+        Shield shield = shieldObject.GetComponent<Shield>();
 
-    private IEnumerator WaitDuration(GameObject shield){
-        yield return new WaitForSeconds(Duration);
-        GameObject.DestroyImmediate(shield);
+        shield.SetDuration(Duration);
+        shield.SetOwner(Owner);
     }
 
 }

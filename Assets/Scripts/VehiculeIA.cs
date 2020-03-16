@@ -10,10 +10,13 @@ public class VehiculeIA : MonoBehaviour
 
     private List<Transform> noeuds;
     private int noeudCourant = 0;
-    
+    private CarController carController;
 
     private void Start()
     {
+        //Acquisition du script de contrôle du véhicule
+        carController = GetComponent<CarController>();
+
         Transform[] traceTransform = trace.GetComponentsInChildren<Transform>();
         noeuds = new List<Transform>();
 
@@ -30,13 +33,35 @@ public class VehiculeIA : MonoBehaviour
     private void FixedUpdate()
     {
         Conduire();
+        UtiliserObjets();
+    }
+
+    private void UtiliserObjets(){
+        Item itemOffensif = carController.GetItem(0);
+        Item itemDefensif = carController.GetItem(1);
+        if(itemOffensif.isReady){
+            // Temp vise vers joueur
+            Vector3 playerPosition = GameObject.FindObjectOfType<PlayerController>().transform.position;
+            carController.Aim(playerPosition);
+            carController.UseItem(0);
+        }
+        if(itemDefensif.isReady){
+            List<ItemEffect> objetsActifs = new List<ItemEffect>(GameObject.FindObjectsOfType<ItemEffect>());
+            foreach(ItemEffect effect in objetsActifs){
+                // Si l'effet est d'un autre propriétaire
+                if(!carController.Equals(effect.GetOwner())){
+                    float distance = (effect.transform.position - transform.position).magnitude;
+                    if(distance < 5) {
+                        carController.UseItem(1);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     private void Conduire()
     {
-        //Acquisition du script de contrôle du véhicule
-        CarController carController = GetComponent<CarController>();
-
         //Calcul de l'angle du prochain noeud du tracé en fonction de la position du véhicule
         Vector3 relativeVector = transform.InverseTransformPoint(noeuds[noeudCourant].position);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
@@ -45,7 +70,6 @@ public class VehiculeIA : MonoBehaviour
         newSteer = AjusterVirage(newSteer);
 
         //Application de l'angle au steer du carController
-        //carController.horizontalAxis = newSteer;
         carController.Steer(newSteer);
 
         //Accélération du véhicule

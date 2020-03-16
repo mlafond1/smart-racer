@@ -5,17 +5,15 @@ using UnityEngine;
 
 public abstract class Item {
 
-    public CarController Owner{get;set;}
+    public CarController Owner{get; private set;}
     public string Name{get; protected set;}
     public float Cooldown{get; protected set;}
-    private bool isReady{get; set;}
+    public float CooldownTimer{get; private set;}
+    public bool isReady{get; private set;}
 
     public Item(CarController Owner){
         this.Owner = Owner;
-    }
-
-    void Start(){
-        isReady = true;
+        this.isReady = true;
     }
 
     public void Use(){
@@ -40,7 +38,13 @@ public abstract class Item {
     }
 
     private IEnumerator WaitCooldown(){
-        yield return new WaitForSeconds(Cooldown);
+        CooldownTimer = Cooldown;
+        while(CooldownTimer > 0){
+            float decrement = CooldownTimer > 1 ? 1 : CooldownTimer;
+            yield return new WaitForSeconds(decrement);
+            CooldownTimer -= decrement;
+        }
+        
         isReady = true;
     }
 

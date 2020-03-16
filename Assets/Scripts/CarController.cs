@@ -12,7 +12,8 @@ public class CarController : MonoBehaviour
     [SerializeField]
     float driftPourcentage = 0.95f;
 
-    public float horizontalAxis = 0f; // TODO remettre private
+    Vector3 aimedPosition;
+    float horizontalAxis = 0f;
     float currentMaxSpeed = 0f;
 
     Item[] items = new Item[2];
@@ -23,6 +24,8 @@ public class CarController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         SetOnTrack();
+        SetItem(0, new MissileItem(this)); // TODO TEMP
+        SetItem(1, new ShieldItem(this)); // TODO TEMP
     }
 
     public void Accelerate(){
@@ -48,9 +51,21 @@ public class CarController : MonoBehaviour
         items[index] = item;
     }
 
+    public Item GetItem(int index){
+        return items[index];
+    }
+
     public void UseItem(int index){
         if(!this.enabled) return;
-        items[index].Use();
+        items[index]?.Use();
+    }
+
+    public void Aim(Vector3 position){
+        this.aimedPosition = position;
+    }
+
+    public Vector3 GetAimedPositon(){
+        return this.aimedPosition;
     }
 
     void FixedUpdate()
