@@ -11,7 +11,7 @@ public class Missile : ItemEffect {
     Rigidbody2D rb;
 
     float speed = 15;
-    float power = 500;
+    float power = 15;
 
     void Start(){
         rb = gameObject.GetComponent<Rigidbody2D>();
@@ -49,7 +49,7 @@ public class Missile : ItemEffect {
         }
         ContactPoint2D contactPoint = collision.GetContact(0);
         Vector2 missileDirection = transform.up;
-        collision.otherRigidbody.AddForceAtPosition(missileDirection * power, contactPoint.point, ForceMode2D.Impulse);
+        collision.rigidbody.AddForceAtPosition(missileDirection * power, contactPoint.point, ForceMode2D.Impulse);
         Destroy(this.gameObject);
     }
 
