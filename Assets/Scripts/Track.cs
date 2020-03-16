@@ -7,7 +7,7 @@ public class Track : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider){
         CarController car = collider.gameObject.GetComponent<CarController>();
         if(car != null){
-            car.SetOnTrack();
+            car.ChangeState(new OnTrackState(car.State));
         } 
     }
 
@@ -16,7 +16,7 @@ public class Track : MonoBehaviour
         if(car != null){
             Rigidbody2D carRigidbody =  car.gameObject.GetComponent<Rigidbody2D>();
             carRigidbody.AddForce(-car.gameObject.transform.up * car.CurrentSpeed());
-            car.SetOffTrack();
+            car.ChangeState(new OffTrackState(car.State));
         } 
     }
 }

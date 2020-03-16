@@ -5,6 +5,7 @@ using UnityEngine;
 public class CarController : MonoBehaviour
 {
 
+    // Pour changer les statistiques dans l'éditeur
     [SerializeField]
     float maxSpeed = 30f;
     [SerializeField]
@@ -13,38 +14,32 @@ public class CarController : MonoBehaviour
     float driftPourcentage = 0.95f;
 
     Vector3 aimedPosition;
-    float horizontalAxis = 0f;
-    float currentMaxSpeed = 0f;
 
     Item[] items = new Item[2];
 
-    Rigidbody2D rb;
+    public CarStatistics Statistics{get; private set;}
+    public CarState State{get; private set;}
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        SetOnTrack();
+        this.Statistics = new CarStatistics(maxSpeed, torqueSpeed, driftPourcentage);
+        this.State = new OnTrackState(this);
         SetItem(0, new MissileItem(this)); // TODO TEMP
         SetItem(1, new ShieldItem(this)); // TODO TEMP
     }
 
     public void Accelerate(){
         if(!this.enabled) return;
-        rb.AddForce(transform.up * currentMaxSpeed);
+        State.Accelerate();
     }
 
     public void Brake(){
         if(!this.enabled) return;
-        rb.AddForce(transform.up * -currentMaxSpeed/1.5f);
+        State.Brake();
     }
 
     public void Steer(float horizontalAxis){
-        if(horizontalAxis > 1) 
-            this.horizontalAxis = 1;
-        else if(horizontalAxis < -1) 
-            this.horizontalAxis = -1;
-        else 
-            this.horizontalAxis = horizontalAxis;
+        State.Steer(horizontalAxis);
     }
 
     public void SetItem(int index, Item item){
@@ -70,35 +65,22 @@ public class CarController : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.rotation -= CurrentSpeed() * horizontalAxis * torqueSpeed * Time.deltaTime;
-
-        float newDriftPourcentage = driftPourcentage * PercentOfMaxSpeed();
-        rb.velocity = ForwardVelocity() + (RightVelocity() * newDriftPourcentage);
-        rb.angularVelocity = 0.0f;
-    }
-
-    Vector2 ForwardVelocity(){
-        return transform.up * Vector2.Dot(rb.velocity, transform.up);
-    }
-
-    Vector2 RightVelocity(){
-        return transform.right * Vector2.Dot(rb.velocity, transform.right);
+        State.Drive();
     }
 
     public float CurrentSpeed(){
-        return Vector2.Dot(rb.velocity, transform.up);
+        return State.CurrentSpeed();
     }
 
     public float PercentOfMaxSpeed(){
-        return rb.velocity.magnitude/maxSpeed;
+        return State.PercentOfMaxSpeed();
     }
 
-    public void SetOnTrack(){
-        currentMaxSpeed = maxSpeed;
-    }
-
-    public void SetOffTrack(){
-        currentMaxSpeed = maxSpeed/3f;
+    public void ChangeState(CarState newState){
+        if(!this.enabled) return;
+        if(State.CanChangeState(newState)){
+            State = newState;
+        }
     }
 
 }
