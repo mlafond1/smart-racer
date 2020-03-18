@@ -59,3 +59,8 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+UIElementsSchema/UIElements.xsd
+UIElementsSchema/UnityEditor.PackageManager.UI.xsd
+UIElementsSchema/UnityEditor.UIElements.Debugger.xsd
+UIElementsSchema/UnityEditor.UIElements.xsd
+UIElementsSchema/UnityEngine.UIElements.xsd
