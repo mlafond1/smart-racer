@@ -14,6 +14,7 @@ public class CarController : MonoBehaviour
     float driftPourcentage = 0.95f;
 
     Vector3 aimedPosition;
+    public Collider2D respawnpoint = null;//TODO remettre private
 
     Item[] items = new Item[2];
 
@@ -83,4 +84,15 @@ public class CarController : MonoBehaviour
         }
     }
 
+    public void SetRespawnpoint(Collider2D newRespawnpoint){
+        this.respawnpoint = newRespawnpoint;
+    }
+
+    public void Respawn(){
+        this.transform.position = this.respawnpoint.transform.position;
+    }
+
+    public void Respawn(Collider2D respawnpoint_){
+        this.transform.position = respawnpoint_.transform.position;
+    }
 }
