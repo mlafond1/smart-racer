@@ -47,7 +47,7 @@ public class CarController : MonoBehaviour
     }
 
     public Item GetItem(int index){
-        return items[index];
+        return index >= items.Length ? null : items[index];
     }
 
     public void UseItem(int index){

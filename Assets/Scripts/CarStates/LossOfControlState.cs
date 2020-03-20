@@ -34,6 +34,7 @@ public class LossOfControlState : CarState {
         if(duration <= 0){
             controller.ChangeState(nextState);
         }
+        rb.angularVelocity *= 0.75f;
     }
 
     public override bool CanChangeState(CarState newState){

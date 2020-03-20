@@ -121,6 +121,7 @@ public class TimeTrialMode : MonoBehaviour
         }
         StartCoroutine("DisplayGo");
         this.enabled = true;
+        ForceItemsOnCooldown();
         ToggleCars(true);
     }
 
@@ -133,6 +134,13 @@ public class TimeTrialMode : MonoBehaviour
     void ToggleCars(bool activate){
         foreach (CarController car in cars){
             car.enabled = activate;
+        }
+    }
+
+    void ForceItemsOnCooldown(){
+        foreach(var car in cars){
+            car.GetItem(0)?.ForceWaitCooldown();
+            car.GetItem(1)?.ForceWaitCooldown();
         }
     }
 
