@@ -15,6 +15,8 @@ public class Missile : ItemEffect {
 
     float speed = 20;
     float power = 12;
+    float damage = 15;
+    float lossOfControlTime = 0.2f;
 
     void Start(){
         rb = gameObject.GetComponent<Rigidbody2D>();
@@ -32,7 +34,7 @@ public class Missile : ItemEffect {
         }
         transform.up = originalUp;
         rb.velocity = originalUp * speed;
-        rb.velocity += launchSpeedDuration > 0 ? launchVelocity * (launchSpeedDuration/maxLaunchSpeedDuration) : new Vector2(0,0);
+        rb.velocity += launchSpeedDuration > 0 ? launchVelocity * (launchSpeedDuration/maxLaunchSpeedDuration) : Vector2.zero;
         rb.angularVelocity = 0;
 
         launchSpeedDuration -= Time.deltaTime;
@@ -55,8 +57,10 @@ public class Missile : ItemEffect {
         }
         ContactPoint2D contactPoint = collision.GetContact(0);
         Vector2 missileDirection = transform.up;
-        car.ChangeState(new LossOfControlState(car.State, 0.2f));
-        collision.rigidbody.AddForceAtPosition(missileDirection * power, contactPoint.point, ForceMode2D.Impulse);
+        car.ChangeState(new LossOfControlState(car.State, lossOfControlTime));
+        car.ApplyDamage(damage);
+        collision.rigidbody.velocity = Vector2.zero;
+        collision.rigidbody.AddForceAtPosition(missileDirection * power * car.Statistics.ejectionRate, contactPoint.point, ForceMode2D.Impulse);
         Destroy(this.gameObject);
     }
 

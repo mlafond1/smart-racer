@@ -76,6 +76,10 @@ public class CarController : MonoBehaviour
         return State.PercentOfMaxSpeed();
     }
 
+    public void ApplyDamage(float damage){
+        Statistics.ApplyDamage(damage);
+    }
+
     public void ChangeState(CarState newState){
         if(!this.enabled) return;
         if(State.CanChangeState(newState)){
