@@ -156,7 +156,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 254.7, y: 14.3}
+  m_AnchoredPosition: {x: 254.70001, y: 14.299988}
   m_SizeDelta: {x: 130, y: 60}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &35859168
@@ -4282,7 +4282,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 30
   torqueSpeed: 6
-  driftPourcentage: 0.95
+  driftPercentage: 0.95
+  power: 7
+  attackDamage: 10
+  respawnpoint: {fileID: 0}
 --- !u!61 &1624853920
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5223,7 +5226,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 30
   torqueSpeed: 6
-  driftPourcentage: 0.95
+  driftPercentage: 0.95
+  power: 7
+  attackDamage: 10
+  respawnpoint: {fileID: 0}
 --- !u!61 &2050256190
 BoxCollider2D:
   m_ObjectHideFlags: 0

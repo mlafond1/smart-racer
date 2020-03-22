@@ -65,7 +65,7 @@ public class VehiculeIA : MonoBehaviour
         //Calcul de l'angle du prochain noeud du tracé en fonction de la position du véhicule
         Vector3 relativeVector = transform.InverseTransformPoint(noeuds[noeudCourant].position);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
-
+        Debug.DrawLine(carController.transform.position, noeuds[noeudCourant].position, Color.black);
         //Ajustement du virage
         newSteer = AjusterVirage(newSteer);
 

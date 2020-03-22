@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class LossOfControlState : CarState {
 
-    private float duration;
-    private CarState nextState;
+    protected float duration;
+    protected CarState nextState;
 
     public LossOfControlState(CarController controller, float duration) : base(controller){
         this.duration = duration;
