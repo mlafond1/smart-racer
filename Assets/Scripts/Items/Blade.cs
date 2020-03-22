@@ -64,7 +64,8 @@ public class Blade : ItemEffect {
             return;
         }
         ContactPoint2D contactPoint = collision.GetContact(0);
-        Vector2 swordDirection = transform.up;
+        Vector2 swordDirection = (transform.position - owner.transform.position).normalized;
+        
         car.ChangeState(new LossOfControlState(car.State, lossOfControlTime));
         car.ApplyDamage(damage);
         collision.rigidbody.velocity = Vector2.zero;
