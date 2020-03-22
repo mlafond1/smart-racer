@@ -37,6 +37,10 @@ public class LossOfControlState : CarState {
         rb.angularVelocity *= 0.5f;
     }
 
+    public override void ClearDuration(){
+        duration = 0;
+    }
+
     public override bool CanChangeState(CarState newState){
         if(newState.GetType() == typeof(LossOfControlState)){
             LossOfControlState other = (LossOfControlState)newState;

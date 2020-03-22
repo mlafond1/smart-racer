@@ -55,4 +55,8 @@ public abstract class CarState {
         return true;
     }
 
+    public virtual void ClearDuration(){
+        
+    }
+
 }
