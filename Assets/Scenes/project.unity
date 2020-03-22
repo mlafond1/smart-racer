@@ -748,6 +748,7 @@ GameObject:
   - component: {fileID: 190316445}
   - component: {fileID: 190316446}
   - component: {fileID: 190316447}
+  - component: {fileID: 190316448}
   m_Layer: 0
   m_Name: GameObject (1)
   m_TagString: Untagged
@@ -845,6 +846,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &190316448
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190316444}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &285117986
 GameObject:
   m_ObjectHideFlags: 0
@@ -1969,7 +1991,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 30
   torqueSpeed: 6
-  driftPourcentage: 0.95
+  driftPercentage: 0.95
+  power: 7
+  attackDamage: 10
 --- !u!61 &704447476
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3149,6 +3173,7 @@ GameObject:
   - component: {fileID: 1316012453}
   - component: {fileID: 1316012454}
   - component: {fileID: 1316012455}
+  - component: {fileID: 1316012456}
   m_Layer: 0
   m_Name: GameObject (3)
   m_TagString: Untagged
@@ -3246,6 +3271,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &1316012456
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316012452}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &1328192792
 GameObject:
   m_ObjectHideFlags: 0
@@ -3295,7 +3341,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 30
   torqueSpeed: 6
-  driftPourcentage: 0.95
+  driftPercentage: 0.95
+  power: 7
+  attackDamage: 10
 --- !u!61 &1328192795
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4266,6 +4314,7 @@ GameObject:
   - component: {fileID: 1587418561}
   - component: {fileID: 1587418562}
   - component: {fileID: 1587418563}
+  - component: {fileID: 1587418564}
   m_Layer: 0
   m_Name: GameObject (2)
   m_TagString: Untagged
@@ -4363,6 +4412,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &1587418564
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587418560}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &1599036055
 GameObject:
   m_ObjectHideFlags: 0
@@ -5676,6 +5746,7 @@ GameObject:
   - component: {fileID: 2140729606}
   - component: {fileID: 2140729605}
   - component: {fileID: 2140729607}
+  - component: {fileID: 2140729608}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -5773,6 +5844,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &2140729608
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140729604}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &2144971513
 GameObject:
   m_ObjectHideFlags: 0

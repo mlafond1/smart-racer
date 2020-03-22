@@ -16,7 +16,7 @@ public class Missile : ItemEffect {
     float speed = 20;
     float power = 12;
     float damage = 15;
-    float lossOfControlTime = 0.2f;
+    float lossOfControlTime = 0.3f;
 
     void Start(){
         rb = gameObject.GetComponent<Rigidbody2D>();

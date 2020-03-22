@@ -11,7 +11,11 @@ public class CarController : MonoBehaviour
     [SerializeField]
     float torqueSpeed = 6f;
     [SerializeField]
-    float driftPourcentage = 0.95f;
+    float driftPercentage = 0.95f;
+    [SerializeField]
+    float power = 7f;
+    [SerializeField]
+    float attackDamage = 10f;
 
     Vector3 aimedPosition;
 
@@ -22,7 +26,7 @@ public class CarController : MonoBehaviour
 
     void Awake()
     {
-        this.Statistics = new CarStatistics(maxSpeed, torqueSpeed, driftPourcentage);
+        this.Statistics = new CarStatistics(maxSpeed, torqueSpeed, driftPercentage, power, attackDamage);
         this.State = new OnTrackState(this);
         SetItem(0, new MissileItem(this)); // TODO TEMP
         SetItem(1, new ShieldItem(this)); // TODO TEMP
@@ -81,9 +85,33 @@ public class CarController : MonoBehaviour
     }
 
     public void ChangeState(CarState newState){
-        if(!this.enabled) return;
         if(State.CanChangeState(newState)){
             State = newState;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision){
+        CarController otherCar;
+        if(collision.collider.TryGetComponent<CarController>(out otherCar)){
+            // Damage
+            float dotProduct = Vector2.Dot(otherCar.transform.right, transform.up);
+            List<RaycastHit2D> objectsInFront = new List<RaycastHit2D>(Physics2D.RaycastAll(transform.position, transform.up, 5f));
+            bool isOtherCarInFront = objectsInFront.Find((obj) => obj.collider.Equals(collision.collider));
+            bool isDamagingCollision = Mathf.Abs(dotProduct) > 0.15 && isOtherCarInFront;
+            if(isDamagingCollision) otherCar.ApplyDamage(Mathf.Abs(dotProduct) * Statistics.attackDamage * PercentOfMaxSpeed());
+            // Bump
+            Vector3 directionAway = otherCar.transform.position - transform.position;
+            directionAway.z = 0;
+            otherCar.ChangeState(new LossOfControlState(otherCar.State, 0.07f));
+            collision.rigidbody.AddForce(directionAway.normalized * Statistics.power * (isDamagingCollision ? otherCar.Statistics.ejectionRate : 1), ForceMode2D.Impulse);
+        }
+        // Explosion
+        bool isHittingAnObstacle = otherCar == null && !collision.collider.GetComponent<ItemEffect>();
+        bool isAtHighSpeed = PercentOfMaxSpeed() > 0.75f;
+        bool isAtHighDamage = Statistics.ejectionRate >= 2;
+        bool isAtLossOfControl = State.GetType() == typeof(LossOfControlState);
+        if(isHittingAnObstacle && isAtHighSpeed && (isAtHighDamage || isAtLossOfControl)){
+            Debug.Log("Explosion -> " + this.name);
         }
     }
 
