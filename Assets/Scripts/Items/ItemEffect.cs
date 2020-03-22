@@ -22,6 +22,10 @@ public abstract class ItemEffect : MonoBehaviour{
     public CarController GetOwner(){
         return this.owner;
     }
+
+    public virtual void OnReflect(CarController other){
+        
+    }
     
 
 }

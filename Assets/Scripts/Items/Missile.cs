@@ -44,6 +44,20 @@ public class Missile : ItemEffect {
         this.target = target;
     }
 
+    public override void OnReflect(CarController other){
+        Collider2D effectCollider = this.gameObject.GetComponent<Collider2D>();
+        Collider2D previousOwnerCollider = owner.GetComponent<Collider2D>();
+        Physics2D.IgnoreCollision(previousOwnerCollider, effectCollider, false); // Peut rentrer en collision avec le précédent propriétaire
+        SetOwner(other);
+        originalUp = -originalUp;
+        launchVelocity = other.GetComponent<Rigidbody2D>().velocity;
+        // Réactiver les collisions aux autres objets
+        ItemEffect[] effects = GameObject.FindObjectsOfType<ItemEffect>();
+        foreach(var effect in effects){
+            Physics2D.IgnoreCollision(effectCollider, effect.gameObject.GetComponent<Collider2D>(), false);
+        }
+    }
+
     void OnCollisionEnter2D(Collision2D collision){
         ItemEffect otherEffect = collision.collider.gameObject.GetComponent<ItemEffect>();
         CarController car = collision.collider.gameObject.GetComponent<CarController>();

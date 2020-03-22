@@ -6,7 +6,7 @@ public class Shield : ItemEffect{
 
     float duration;
     bool initialized = false;
-    Collider2D ownerCollider;
+    protected Collider2D ownerCollider;
 
     void Update(){
         if(owner == null) return;
@@ -47,7 +47,7 @@ public class Shield : ItemEffect{
     }
 
     // TODO Refactor avec CarController.OnCollisionEnter2D...??
-    void OnCollisionEnter2D(Collision2D collision){
+    protected virtual void OnCollisionEnter2D(Collision2D collision){
         CarController otherCar;
         if(collision.collider.TryGetComponent<CarController>(out otherCar)){
             // Damage
