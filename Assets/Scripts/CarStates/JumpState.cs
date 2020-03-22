@@ -5,24 +5,27 @@ using UnityEngine;
 public class JumpState : LossOfControlState {
     private float halfDuration;
     private Vector3 originalScale;
-    private Vector2 originalVelocity;
-    private float increaseFactor = 0.005f;
-    public JumpState(CarController controller, float duration) : base(controller, duration)
+    private float originalDrag;
+    private int originalLayer;
+    private float increaseFactor = 0.05f;
+    public JumpState(CarController controller, float duration) : this(controller.State, duration)
     {
-        this.duration = duration;
-        this.halfDuration = this.duration * 0.5f;
-        this.originalScale = controller.transform.localScale; 
-        this.originalVelocity = base.rb.velocity;
-        nextState = controller.State;
     }
 
     public JumpState(CarState old, float duration) : base(old, duration)
     {
         this.duration = duration;
-        nextState = old;
+        this.halfDuration = duration * 0.5f;
+        this.originalScale = controller.transform.localScale;
+        this.originalDrag = rb.drag;
+        this.originalLayer = controller.gameObject.layer;
+        // Set drag 0 so theres no deceleration
+        rb.drag = 0;
+        controller.gameObject.layer++;
+        // If jumping ignore not jumping layers
+        Physics2D.IgnoreLayerCollision(originalLayer, controller.gameObject.layer, true);
     }
 
-    // TODO Ignore car collisions that are not in JumpState
     public override void Drive()
     {
         Vector3 tmp = controller.transform.localScale;
@@ -31,24 +34,23 @@ public class JumpState : LossOfControlState {
         {
             //At end of JumpState return to previous state
             controller.ChangeState(nextState);
-            //Reset scale to original value
-            controller.transform.localScale = originalScale;
+            //Reset original values
+            ResetValues();
         }
         else if(duration >= halfDuration)
         {
             //Increase scale for illusion of gaining height
-            tmp.x += increaseFactor;
-            tmp.y += increaseFactor;
+            tmp.x += Time.deltaTime * increaseFactor;
+            tmp.y += Time.deltaTime * increaseFactor;
             controller.transform.localScale = tmp;
         }
         else
         {
             //Decrease scale for illusion of losing height
-            tmp.x -= increaseFactor;
-            tmp.y -= increaseFactor;
+            tmp.x -= Time.deltaTime * increaseFactor;
+            tmp.y -= Time.deltaTime * increaseFactor;
             controller.transform.localScale = tmp;
         }
-        
     }
     public override bool CanChangeState(CarState newState)
     {
@@ -61,6 +63,13 @@ public class JumpState : LossOfControlState {
         if (duration <= 0) return true;
         this.nextState = newState;
         return false;
+    }
+
+    public void ResetValues(){
+        Physics2D.IgnoreLayerCollision(originalLayer, controller.gameObject.layer, false);
+        controller.transform.localScale = originalScale;
+        controller.gameObject.layer = originalLayer;
+        rb.drag = originalDrag;
     }
 
 }
