@@ -52,4 +52,9 @@ public abstract class Item {
         isReady = true;
     }
 
+    public void ForceWaitCooldown(){
+        isReady = false;
+        Owner.StartCoroutine(WaitCooldown());
+    }
+
 }

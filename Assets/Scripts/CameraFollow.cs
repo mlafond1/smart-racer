@@ -14,10 +14,9 @@ public class CameraFollow : MonoBehaviour
 
     Vector3 offset = new Vector3(0,0, -10); // La caméra doit être au dessus du véhicule pour le voir
 
-    // Start is called before the first frame update
     void Start()
     {
-        cars = new List<CarController>(GameObject.FindObjectsOfType<CarController>());
+        cars = new List<CarController>(Resources.FindObjectsOfTypeAll<CarController>());
         carController = GetComponentInParent<CarController>();
         if(carController != null){
             carIndex = cars.FindIndex((other) => other.Equals(carController));

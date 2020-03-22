@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemEffect : MonoBehaviour{
+public abstract class ItemEffect : MonoBehaviour{
 
     protected CarController owner;
 

@@ -24,8 +24,8 @@ public abstract class NormalState : CarState {
     public override void Drive(){
         rb.rotation -= CurrentSpeed() * horizontalAxis * statistics.torqueSpeed * Time.deltaTime;
 
-        float newDriftPourcentage = statistics.driftPourcentage * PercentOfMaxSpeed();
-        rb.velocity = ForwardVelocity() + (RightVelocity() * newDriftPourcentage);
+        float newDriftPercentage = statistics.driftPercentage * PercentOfMaxSpeed();
+        rb.velocity = ForwardVelocity() + (RightVelocity() * newDriftPercentage);
         rb.angularVelocity = 0.0f;
     }
 
