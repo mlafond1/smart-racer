@@ -1994,6 +1994,7 @@ MonoBehaviour:
   driftPercentage: 0.95
   power: 7
   attackDamage: 10
+  respawnpoint: {fileID: 0}
 --- !u!61 &704447476
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3363,6 +3364,7 @@ MonoBehaviour:
   driftPercentage: 0.95
   power: 7
   attackDamage: 10
+  respawnpoint: {fileID: 0}
 --- !u!61 &1328192795
 BoxCollider2D:
   m_ObjectHideFlags: 0

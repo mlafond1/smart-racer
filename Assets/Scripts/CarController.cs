@@ -29,7 +29,7 @@ public class CarController : MonoBehaviour
     {
         this.Statistics = new CarStatistics(maxSpeed, torqueSpeed, driftPercentage, power, attackDamage);
         this.State = new OnTrackState(this);
-        SetItem(0, new HarpoonItem(this)); // TODO TEMP
+        SetItem(0, new BladeItem(this)); // TODO TEMP
         SetItem(1, new ShieldItem(this)); // TODO TEMP
     }
 
