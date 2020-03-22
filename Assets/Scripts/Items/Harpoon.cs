@@ -27,12 +27,9 @@ public class Harpoon : ItemEffect {
     }
 
     void Update(){
-        rope.gameObject.SetActive(true);
-        Vector3 sp = owner.transform.position;
-        Vector3 ep = transform.position;
         rope.positionCount = 2;
-        rope.SetPosition(0, sp);
-        rope.SetPosition(1, ep);
+        rope.SetPosition(0, owner.transform.position);
+        rope.SetPosition(1, transform.position);
     }
 
     void FixedUpdate(){
