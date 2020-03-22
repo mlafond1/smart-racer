@@ -9,7 +9,7 @@ public class HarpoonItem : Item {
 
     public HarpoonItem(CarController Owner) : base(Owner) {
         Name = "harpoon";
-        Cooldown = 2;
+        Cooldown = 10;
         Range = 12;
     }
 
