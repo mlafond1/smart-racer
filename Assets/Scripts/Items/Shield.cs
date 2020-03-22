@@ -23,6 +23,7 @@ public class Shield : ItemEffect{
             Destroy(this.gameObject);
         }
         transform.position = owner.transform.position;
+        transform.up = owner.transform.up;
     }
     
     void FixedUpdate(){
@@ -37,7 +38,7 @@ public class Shield : ItemEffect{
         this.duration = duration;
     }
 
-    void ToggleOtherEffects(bool ignore){
+    protected virtual void ToggleOtherEffects(bool ignore){
         ItemEffect[] effects = GameObject.FindObjectsOfType<ItemEffect>();
         foreach(var effect in effects){
             if(!effect.SameOwner(this)){
