@@ -83,8 +83,8 @@ public class Harpoon : ItemEffect {
     }
 
     IEnumerator PerformPullBack(CarController car){
-        isPulling = true;
         rb.velocity = Vector2.zero;
+        isPulling = true;
         GetComponent<Collider2D>().enabled = false;
         Collider2D ownerCollider = owner.GetComponent<Collider2D>();
         Collider2D otherCollider = car.GetComponent<Collider2D>();

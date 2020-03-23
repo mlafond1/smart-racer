@@ -47,9 +47,7 @@ public class Shield : ItemEffect{
     protected virtual void ToggleOtherEffects(bool ignore){
         ItemEffect[] effects = GameObject.FindObjectsOfType<ItemEffect>();
         foreach(var effect in effects){
-            if(!effect.SameOwner(this)){
-                Physics2D.IgnoreCollision(ownerCollider, effect.gameObject.GetComponent<Collider2D>(), ignore);
-            }
+            Physics2D.IgnoreCollision(ownerCollider, effect.gameObject.GetComponent<Collider2D>(), ignore);
         }
     }
 

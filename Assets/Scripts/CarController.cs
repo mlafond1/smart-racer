@@ -39,7 +39,9 @@ public class CarController : MonoBehaviour
         offensiveItems = new Item[] { 
             new MissileItem(this),
             new BladeItem(this), 
-            new HarpoonItem(this)
+            new HarpoonItem(this),
+            new MineItem(this),
+            new SlowMineItem(this)
         };
         defensiveItems = new Item[] { 
             new ShieldItem(this), 
