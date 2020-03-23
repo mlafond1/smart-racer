@@ -10,11 +10,13 @@ public class LossOfControlState : CarState {
     public LossOfControlState(CarController controller, float duration) : base(controller){
         this.duration = duration;
         nextState = controller.State;
+        controller.StartCoroutine(WaitDuration());
     }
 
     public LossOfControlState(CarState old, float duration) : base(old) {
         this.duration = duration;
         nextState = old;
+        controller.StartCoroutine(WaitDuration());
     }
 
     public override void Accelerate(){
@@ -30,10 +32,6 @@ public class LossOfControlState : CarState {
     }
 
     public override void Drive(){
-        duration -= Time.deltaTime;
-        if(duration <= 0){
-            controller.ChangeState(nextState);
-        }
         rb.angularVelocity *= 0.5f;
     }
 
@@ -50,6 +48,14 @@ public class LossOfControlState : CarState {
         if(duration <= 0) return true;
         this.nextState = newState;
         return false;
+    }
+
+    IEnumerator WaitDuration(){
+        while(duration > 0){
+            yield return new WaitForSeconds(duration >= 0.1f ? 0.1f : duration);
+            duration -= 0.1f;
+        }
+        controller.ChangeState(nextState);
     }
 
 }

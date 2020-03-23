@@ -30,4 +30,9 @@ public class CarStatistics {
         this.canTakeDamage = canTakeDamage;
     }
 
+    public void UpdateOffensiveStats(float powerIncrease, float attackDamageIncrease){
+        this.power += powerIncrease;
+        this.attackDamage += attackDamageIncrease;
+    }
+
 }

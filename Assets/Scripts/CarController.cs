@@ -44,7 +44,8 @@ public class CarController : MonoBehaviour
         defensiveItems = new Item[] { 
             new ShieldItem(this), 
             new ReflectShieldItem(this),
-            new GhostItem(this)
+            new GhostItem(this),
+            new BoostItem(this)
         };
         SetItem(0, offensiveItems[0]);
         SetItem(1, defensiveItems[0]);
