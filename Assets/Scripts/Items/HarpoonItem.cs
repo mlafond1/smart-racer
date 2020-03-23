@@ -13,13 +13,4 @@ public class HarpoonItem : Item {
         Range = 12;
     }
 
-    protected override void Active(){
-        GameObject harpoonObject = GetInstantiatedPrefab();
-        Harpoon harpoon = harpoonObject.GetComponent<Harpoon>();
-
-        harpoon.SetOwner(Owner);
-        harpoon.SetRange(Range);
-        harpoon.SetTarget(Owner.GetAimedPositon());
-    }
-
 }

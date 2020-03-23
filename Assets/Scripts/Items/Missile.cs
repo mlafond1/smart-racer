@@ -5,7 +5,6 @@ using UnityEngine;
 public class Missile : ItemEffect {
 
     Vector3 target;
-    bool initialized = false;
     Vector2 launchVelocity;
     Vector3 originalUp;
     Rigidbody2D rb;
@@ -20,18 +19,21 @@ public class Missile : ItemEffect {
 
     void Start(){
         rb = gameObject.GetComponent<Rigidbody2D>();
-        initialized = false;
     }
 
+    public override void InitialSetup(Item item){
+        MissileItem missileItem = (MissileItem)item;
+        SetOwner(item.Owner);
+        SetTarget(item.Owner.GetAimedPositon());
+        transform.up = target - transform.position;
+        originalUp = transform.up;
+        launchVelocity = owner.gameObject.GetComponent<Rigidbody2D>().velocity;
+        launchSpeedDuration = maxLaunchSpeedDuration;
+        initialized = true;
+    }  
+
     void FixedUpdate(){
-        if(target == null || owner == null) return;
-        if(!initialized){
-            transform.up = target - transform.position;
-            originalUp = transform.up;
-            initialized = true;
-            launchVelocity = owner.gameObject.GetComponent<Rigidbody2D>().velocity;
-            launchSpeedDuration = maxLaunchSpeedDuration;
-        }
+        if(!initialized) return;
         transform.up = originalUp;
         rb.velocity = originalUp * speed;
         rb.velocity += launchSpeedDuration > 0 ? launchVelocity * (launchSpeedDuration/maxLaunchSpeedDuration) : Vector2.zero;

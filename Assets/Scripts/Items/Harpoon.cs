@@ -6,7 +6,6 @@ public class Harpoon : ItemEffect {
 
     Vector3 target;
     float range;
-    bool initialized = false;
     bool isPulling = false;
     LineRenderer rope;
     Vector2 launchVelocity;
@@ -23,24 +22,29 @@ public class Harpoon : ItemEffect {
     void Start(){
         rb = gameObject.GetComponent<Rigidbody2D>();
         rope = gameObject.GetComponent<LineRenderer>();
-        initialized = false;
+    }
+
+    public override void InitialSetup(Item item){
+        HarpoonItem harpoonItem = (HarpoonItem)item;
+        SetOwner(harpoonItem.Owner);
+        SetRange(harpoonItem.Range);
+        SetTarget(harpoonItem.Owner.GetAimedPositon());
+        transform.up = target - transform.position;
+        originalUp = transform.up;
+        launchVelocity = owner.gameObject.GetComponent<Rigidbody2D>().velocity;
+        launchSpeedDuration = maxLaunchSpeedDuration;
+        initialized = true;
     }
 
     void Update(){
+        if(!initialized) return;
         rope.positionCount = 2;
         rope.SetPosition(0, owner.transform.position);
         rope.SetPosition(1, transform.position);
     }
 
     void FixedUpdate(){
-        if(target == null || owner == null || range == 0) return;
-        if(!initialized){
-            transform.up = target - transform.position;
-            originalUp = transform.up;
-            initialized = true;
-            launchVelocity = owner.gameObject.GetComponent<Rigidbody2D>().velocity;
-            launchSpeedDuration = maxLaunchSpeedDuration;
-        }
+        if(!initialized) return;
         if(!isPulling){
             transform.up = originalUp;
             rb.velocity = originalUp * speed;

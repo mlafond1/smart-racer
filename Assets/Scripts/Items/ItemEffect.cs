@@ -5,6 +5,9 @@ using UnityEngine;
 public abstract class ItemEffect : MonoBehaviour{
 
     protected CarController owner;
+    protected bool initialized = false;
+
+    public abstract void InitialSetup(Item item);
 
     public void SetOwner(CarController Owner){
         this.owner = Owner;

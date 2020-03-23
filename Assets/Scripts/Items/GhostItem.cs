@@ -13,12 +13,4 @@ public class GhostItem : Item {
         Duration = 4;
     }
 
-    protected override void Active(){
-        GameObject ghostObject = GetInstantiatedPrefab();
-        Ghost ghost = ghostObject.GetComponent<Ghost>();
-
-        ghost.SetDuration(Duration);
-        ghost.SetOwner(Owner);
-    }
-
 }

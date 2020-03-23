@@ -10,11 +10,4 @@ public class MissileItem : Item {
         Cooldown = 5;
     }
 
-    protected override void Active(){
-        GameObject missileObject = GetInstantiatedPrefab();
-        Missile missile = missileObject.GetComponent<Missile>();
-        missile.SetOwner(Owner);
-        missile.SetTarget(Owner.GetAimedPositon());
-    }
-
 }

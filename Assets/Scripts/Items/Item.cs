@@ -24,7 +24,11 @@ public abstract class Item {
         }
     }
 
-    protected abstract void Active();
+    protected virtual void Active(){
+        GameObject itemEffectObject = GetInstantiatedPrefab();
+        ItemEffect effect = itemEffectObject.GetComponent<ItemEffect>();
+        effect.InitialSetup(this);
+    }
 
     protected GameObject GetPrefab(){
         return LoadItems.GetItemPrefab(Name);

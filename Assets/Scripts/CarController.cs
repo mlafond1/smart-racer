@@ -29,8 +29,6 @@ public class CarController : MonoBehaviour
     {
         this.Statistics = new CarStatistics(maxSpeed, torqueSpeed, driftPercentage, power, attackDamage);
         this.State = new OnTrackState(this);
-        SetItem(0, new MissileItem(this)); // TODO TEMP
-        SetItem(1, new GhostItem(this)); // TODO TEMP
     }
 
     public void Accelerate(){

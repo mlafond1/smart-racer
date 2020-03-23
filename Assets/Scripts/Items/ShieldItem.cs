@@ -13,12 +13,4 @@ public class ShieldItem : Item {
         Duration = 3;
     }
 
-    protected override void Active(){
-        GameObject shieldObject = GetInstantiatedPrefab();
-        Shield shield = shieldObject.GetComponent<Shield>();
-
-        shield.SetDuration(Duration);
-        shield.SetOwner(Owner);
-    }
-
 }

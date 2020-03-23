@@ -10,11 +10,4 @@ public class BladeItem : Item {
         Cooldown = 5;
     }
 
-    protected override void Active(){
-        GameObject bladeObject = GetInstantiatedPrefab();
-        Blade blade = bladeObject.GetComponent<Blade>();
-
-        blade.SetOwner(Owner);
-    }
-
 }

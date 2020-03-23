@@ -5,17 +5,23 @@ using UnityEngine;
 public class Shield : ItemEffect{
 
     float duration;
-    bool initialized = false;
     protected Collider2D ownerCollider;
 
+    public override void InitialSetup(Item item){
+        ShieldItem shieldItem = (ShieldItem)item;
+        InitialSetup(shieldItem, shieldItem.Duration);
+    }
+
+    protected void InitialSetup(Item item, float shieldDuration){
+        SetOwner(item.Owner);
+        SetDuration(shieldDuration);
+        ownerCollider = owner.gameObject.GetComponent<Collider2D>();
+        owner.Statistics.ToggleDamage(false);
+        initialized = true;
+    }
+
     void Update(){
-        if(owner == null) return;
-        if(!initialized){
-            initialized = duration != 0;
-            ownerCollider = owner.gameObject.GetComponent<Collider2D>();
-            owner.Statistics.ToggleDamage(false);
-            return;
-        }
+        if(!initialized) return;
         duration -= Time.deltaTime;
         if(duration <= 0){
             ToggleOtherEffects(false);
@@ -27,7 +33,7 @@ public class Shield : ItemEffect{
     }
     
     void FixedUpdate(){
-        if(owner == null || !initialized) return;
+        if(!initialized) return;
         transform.position = owner.transform.position;
         if(duration > 0){
             ToggleOtherEffects(true);

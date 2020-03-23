@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Blade : ItemEffect {
 
-    bool initialized = false;
     const float rotationOffset = -134.353f;
     bool isDoneStabbing = false;
     float distanceFromCenter = 0f;
@@ -19,10 +18,16 @@ public class Blade : ItemEffect {
 
     void Start(){
         rb = gameObject.GetComponent<Rigidbody2D>();
-        initialized = false;
+    }
+
+    public override void InitialSetup(Item item){
+        BladeItem bladeItem = (BladeItem)item;
+        SetOwner(bladeItem.Owner);
+        initialized = true;
     }
 
     void Update(){
+        if(!initialized) return;
         transform.up = owner.transform.up;
         transform.Rotate(Vector3.forward, rotationOffset);
         transform.position = owner.transform.position + owner.transform.up.normalized * distanceFromCenter;
@@ -35,14 +40,11 @@ public class Blade : ItemEffect {
     }
 
     void FixedUpdate(){
-        if(owner == null) return;
-        if(!initialized){
-            initialized = true;
-        }
+        if(!initialized) return;
         // Stab
         if(!isDoneStabbing){
             distanceFromCenter += Time.fixedDeltaTime * speed;
-                if(distanceFromCenter >= range){
+            if(distanceFromCenter >= range){
                 transform.position = owner.transform.position + owner.transform.up.normalized * range;
                 distanceFromCenter = range;
                 isDoneStabbing = true;
@@ -55,7 +57,10 @@ public class Blade : ItemEffect {
     void OnCollisionEnter2D(Collision2D collision){
         ItemEffect otherEffect = collision.collider.gameObject.GetComponent<ItemEffect>();
         CarController car = collision.collider.gameObject.GetComponent<CarController>();
-        if(owner.Equals(car) || SameOwner(otherEffect) || otherEffect?.GetType() == typeof(Shield)){
+        bool isEffectAShield = 
+            otherEffect != null && 
+            (otherEffect.GetType().IsSubclassOf(typeof(Shield)) || otherEffect.GetType() == typeof(Shield));
+        if(owner.Equals(car) || SameOwner(otherEffect) || isEffectAShield){
             Physics2D.IgnoreCollision(collision.collider, collision.otherCollider);
             return;
         }

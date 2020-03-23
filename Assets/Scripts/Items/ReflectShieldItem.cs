@@ -13,12 +13,4 @@ public class ReflectShieldItem : Item {
         Duration = 3;
     }
 
-    protected override void Active(){
-        GameObject reflectObject = GetInstantiatedPrefab();
-        ReflectShield shield = reflectObject.GetComponent<ReflectShield>();
-
-        shield.SetDuration(Duration);
-        shield.SetOwner(Owner);
-    }
-
 }
