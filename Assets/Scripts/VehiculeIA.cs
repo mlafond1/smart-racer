@@ -28,9 +28,6 @@ public class VehiculeIA : MonoBehaviour
                 noeuds.Add(traceTransform[i]);
             }
         }
-        // TEMP items de départ
-        carController.SetItem(0, new BladeItem(carController));
-        carController.SetItem(1, new ReflectShieldItem(carController));
     }
         
     private void FixedUpdate()
