@@ -10,13 +10,11 @@ public class LossOfControlState : CarState {
     public LossOfControlState(CarController controller, float duration) : base(controller){
         this.duration = duration;
         nextState = controller.State;
-        controller.StartCoroutine(WaitDuration());
     }
 
     public LossOfControlState(CarState old, float duration) : base(old) {
         this.duration = duration;
         nextState = old;
-        controller.StartCoroutine(WaitDuration());
     }
 
     public override void Accelerate(){
@@ -48,6 +46,10 @@ public class LossOfControlState : CarState {
         if(duration <= 0) return true;
         this.nextState = newState;
         return false;
+    }
+
+    public override void OnStateEnter(){
+        controller.StartCoroutine(WaitDuration());
     }
 
     IEnumerator WaitDuration(){

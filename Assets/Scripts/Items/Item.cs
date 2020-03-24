@@ -11,11 +11,6 @@ public class Item {
     public float CooldownTimer{get; private set;}
     public bool isReady{get; private set;}
 
-    public Item(CarController Owner){ // TODO delete
-        this.Owner = Owner;
-        this.isReady = true;
-    }
-
     public Item(CarController Owner, string Name){
         this.Owner = Owner;
         this.Name = Name;

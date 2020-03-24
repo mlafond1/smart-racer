@@ -55,6 +55,10 @@ public abstract class CarState {
         return true;
     }
 
+    public virtual void OnStateEnter(){
+        
+    }
+
     public virtual void ClearDuration(){
         
     }

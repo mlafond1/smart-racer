@@ -122,6 +122,7 @@ public class CarController : MonoBehaviour
     public void ChangeState(CarState newState){
         if(State.CanChangeState(newState)){
             State = newState;
+            State.OnStateEnter();
         }
     }
 

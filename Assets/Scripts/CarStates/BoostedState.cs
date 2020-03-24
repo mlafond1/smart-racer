@@ -14,7 +14,6 @@ public class BoostedState : NormalState {
         this.nextState = controller.State;
         this.powerIncrease = powerIncrease;
         this.damageIncrease = damageIncrease;
-        controller.StartCoroutine(WaitDuration());
     }
 
     public BoostedState(CarState old, float duration, float powerIncrease = 0f, float damageIncrease = 0f) : base(old) {
@@ -22,7 +21,6 @@ public class BoostedState : NormalState {
         this.nextState = old;
         this.powerIncrease = powerIncrease;
         this.damageIncrease = damageIncrease;
-        controller.StartCoroutine(WaitDuration());
     }
 
     public override void Accelerate(){
@@ -37,6 +35,10 @@ public class BoostedState : NormalState {
         if(newState.GetType() == typeof(BoostedState)){
             BoostedState other = (BoostedState)newState;
             this.duration = other.duration;
+            controller.Statistics.UpdateOffensiveStats(-powerIncrease, -damageIncrease);
+            powerIncrease = other.powerIncrease > this.powerIncrease ? other.powerIncrease : this.powerIncrease;
+            damageIncrease = other.damageIncrease > this.damageIncrease ? other.damageIncrease : this.damageIncrease;
+            controller.Statistics.UpdateOffensiveStats(powerIncrease, damageIncrease);
             return false;
         }
         if(newState.GetType() == typeof(LossOfControlState) || newState.GetType().IsSubclassOf(typeof(LossOfControlState))){
@@ -45,6 +47,10 @@ public class BoostedState : NormalState {
         if(duration <= 0) return true;
         this.nextState = newState;
         return false;
+    }
+
+    public override void OnStateEnter(){
+        controller.StartCoroutine(WaitDuration());
     }
 
     IEnumerator WaitDuration(){
