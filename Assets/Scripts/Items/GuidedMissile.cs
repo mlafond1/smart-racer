@@ -13,8 +13,10 @@ public class GuidedMissile : ItemEffect {
     float lossOfControlTime = 0.3f;
 
     bool foundFirstCheckpoint = false;
+    bool hasTargetLocked = false;
     bool isGoingForward;
     int checkpointIndex = 0;
+    CarController lockedCar;
     List<Collider2D> checkpoints;
     List<CarController> cars;
     Vector3 originalUp;
@@ -80,15 +82,24 @@ public class GuidedMissile : ItemEffect {
             }
         }
         // Vise la voiture la plus proche si suffisament proche
-        float minDistance = float.PositiveInfinity;
-        foreach(var car in cars){
-            if(car.Equals(owner)) continue;
-            float distanceAhead = Vector2.Distance(car.transform.position, transform.position + transform.up);
-            Vector2 direction = car.transform.position - transform.position;
-            minDistance = distanceAhead < minDistance ? distanceAhead : minDistance;
-            if(distanceAhead < 5 && minDistance.Equals(distanceAhead)){
-                transform.up = direction;
-                rb.velocity = transform.up * speed;
+        if(hasTargetLocked){
+            Vector2 direction = lockedCar.transform.position - transform.position;
+            transform.up = direction;
+            rb.velocity = transform.up * speed;
+        }
+        else {
+            float minDistance = float.PositiveInfinity;
+            foreach(var car in cars){
+                if(car.Equals(owner)) continue;
+                float distanceAhead = Vector2.Distance(car.transform.position, transform.position + transform.up);
+                Vector2 direction = car.transform.position - transform.position;
+                minDistance = distanceAhead < minDistance ? distanceAhead : minDistance;
+                if(distanceAhead < 5 && minDistance.Equals(distanceAhead)){
+                    transform.up = direction;
+                    rb.velocity = transform.up * speed;
+                    lockedCar = car;
+                    hasTargetLocked = true;
+                }
             }
         }
         
@@ -104,6 +115,7 @@ public class GuidedMissile : ItemEffect {
         originalUp = -originalUp;
         launchVelocity = other.GetComponent<Rigidbody2D>().velocity;
         isGoingForward = !isGoingForward;
+        hasTargetLocked = false;
         CycleIndex();
         // Réactiver les collisions aux autres objets
         ItemEffect[] effects = GameObject.FindObjectsOfType<ItemEffect>();
