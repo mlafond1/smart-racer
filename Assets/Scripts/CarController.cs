@@ -47,7 +47,8 @@ public class CarController : MonoBehaviour
             new ShieldItem(this), 
             new ReflectShieldItem(this),
             new GhostItem(this),
-            new BoostItem(this)
+            new BoostItem(this),
+            new InvincibleBoostItem(this)
         };
         SetItem(0, offensiveItems[0]);
         SetItem(1, defensiveItems[0]);

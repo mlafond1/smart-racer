@@ -12,8 +12,8 @@ public class BoostItem : Item {
         Name = "boost";
         Cooldown = 6;
         Duration = 3;
-        PowerIncrease = 10;
-        DamageIncrease = 10;
+        PowerIncrease = 8;
+        DamageIncrease = 8;
     }
 
 }
