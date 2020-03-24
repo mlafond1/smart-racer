@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class Missile : ItemEffect {
 
+    public const string Name = "missile";
+    const float cooldown = 5;
+
+    float speed = 20;
+    float power = 12;
+    float damage = 15;
+    float lossOfControlTime = 0.3f;
+    
     Vector3 target;
     Vector2 launchVelocity;
     Vector3 originalUp;
@@ -12,17 +20,12 @@ public class Missile : ItemEffect {
     float maxLaunchSpeedDuration = 2f;
     float launchSpeedDuration = 0f;
 
-    float speed = 20;
-    float power = 12;
-    float damage = 15;
-    float lossOfControlTime = 0.3f;
 
     void Start(){
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
     public override void InitialSetup(Item item){
-        MissileItem missileItem = (MissileItem)item;
         SetOwner(item.Owner);
         SetTarget(item.Owner.GetAimedPositon());
         transform.up = target - transform.position;
@@ -30,7 +33,11 @@ public class Missile : ItemEffect {
         launchVelocity = owner.gameObject.GetComponent<Rigidbody2D>().velocity;
         launchSpeedDuration = maxLaunchSpeedDuration;
         initialized = true;
-    }  
+    }
+
+    public override float GetCooldown(){
+        return cooldown;
+    }
 
     void FixedUpdate(){
         if(!initialized) return;

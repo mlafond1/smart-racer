@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class Blade : ItemEffect {
 
-    const float rotationOffset = -134.353f;
-    bool isDoneStabbing = false;
-    float distanceFromCenter = 0f;
-    float angleRotation = 0;
-    Rigidbody2D rb;
+    public const string Name = "blade";
+    const float cooldown = 5;
 
     float range = 2;
     float speed = 20;
@@ -16,14 +13,24 @@ public class Blade : ItemEffect {
     float damage = 20;
     float lossOfControlTime = 0.3f;
 
+    const float rotationOffset = -134.353f;
+    bool isDoneStabbing = false;
+    float distanceFromCenter = 0f;
+    float angleRotation = 0;
+    Rigidbody2D rb;
+
+
     void Start(){
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
     public override void InitialSetup(Item item){
-        BladeItem bladeItem = (BladeItem)item;
-        SetOwner(bladeItem.Owner);
+        SetOwner(item.Owner);
         initialized = true;
+    }
+
+    public override float GetCooldown(){
+        return cooldown;
     }
 
     void Update(){

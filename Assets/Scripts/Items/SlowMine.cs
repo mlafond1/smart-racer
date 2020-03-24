@@ -4,17 +4,22 @@ using UnityEngine;
 
 public class SlowMine : Mine {
 
+    new public const string Name = "slow-mine";
+    const float cooldown = 7;
+    const float duration = 2;
+
     float slowPercent = .4f;
-    float duration;
 
     public override void InitialSetup(Item item){
-        SlowMineItem mineItem = (SlowMineItem)item;
-        owner = mineItem.Owner;
-        duration = mineItem.Duration;
+        owner = item.Owner;
         originalUp = owner.transform.up;
         transform.up = originalUp;
         initialPosition = owner.transform.position - (2 * transform.up.normalized);
         initialized = true;
+    }
+
+    public override float GetCooldown(){
+        return cooldown;
     }
 
     protected override void OnTriggerEnter2D(Collider2D otherCollider){

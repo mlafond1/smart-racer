@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Harpoon : ItemEffect {
 
+    public const string Name = "harpoon";
+    const float cooldown = 10;
+    const float range = 12;
+
     Vector3 target;
-    float range;
     bool isPulling = false;
     LineRenderer rope;
     Vector2 launchVelocity;
@@ -25,15 +28,17 @@ public class Harpoon : ItemEffect {
     }
 
     public override void InitialSetup(Item item){
-        HarpoonItem harpoonItem = (HarpoonItem)item;
-        SetOwner(harpoonItem.Owner);
-        SetRange(harpoonItem.Range);
-        SetTarget(harpoonItem.Owner.GetAimedPositon());
+        SetOwner(item.Owner);
+        SetTarget(item.Owner.GetAimedPositon());
         transform.up = target - transform.position;
         originalUp = transform.up;
         launchVelocity = owner.gameObject.GetComponent<Rigidbody2D>().velocity;
         launchSpeedDuration = maxLaunchSpeedDuration;
         initialized = true;
+    }
+
+    public override float GetCooldown(){
+        return cooldown;
     }
 
     void Update(){
@@ -58,10 +63,6 @@ public class Harpoon : ItemEffect {
 
     public void SetTarget(Vector3 target){
         this.target = target;
-    }
-
-    public void SetRange(float range){
-        this.range = range;
     }
 
     void OnCollisionEnter2D(Collision2D collision){

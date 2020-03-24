@@ -5,10 +5,19 @@ using UnityEngine;
 
 public class InvincibleBoost : Shield {
 
+    new public const string Name = "invincible-boost";
+    const float cooldown = 12;
+    const float duration = 4;
+    const float powerIncrease = 10;
+    const float damageIncrease = 10;
+
     public override void InitialSetup(Item item){
-        InvincibleBoostItem invincibleItem = (InvincibleBoostItem)item;
-        InitialSetup(invincibleItem, invincibleItem.Duration);
-        owner.ChangeState(new BoostedState(owner.State, invincibleItem.Duration, invincibleItem.PowerIncrease, invincibleItem.DamageIncrease));
+        InitialSetup(item, duration);
+        owner.ChangeState(new BoostedState(owner.State, duration, powerIncrease, damageIncrease));
+    }
+
+    public override float GetCooldown(){
+        return cooldown;
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision){

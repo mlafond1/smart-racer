@@ -4,21 +4,27 @@ using UnityEngine;
 
 public class Mine : ItemEffect {
 
-    protected Vector3 initialPosition;
-    protected Vector3 originalUp;
+    public const string Name = "mine";
+    const float cooldown = 7;
 
     float power = 20;
     float damage = 12;
     float lossOfControlTime = 0.3f;
 
+    protected Vector3 initialPosition;
+    protected Vector3 originalUp;
+
     public override void InitialSetup(Item item){
-        MineItem mineItem = (MineItem)item;
-        owner = mineItem.Owner;
+        owner = item.Owner;
         originalUp = owner.transform.up;
         transform.up = originalUp;
         initialPosition = owner.transform.position - (2 * transform.up.normalized);
         initialized = true;
-    }  
+    }
+
+    public override float GetCooldown(){
+        return cooldown;
+    }
 
     void FixedUpdate(){
         if(!initialized) return;

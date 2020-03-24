@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Item {
+public class Item {
 
     public CarController Owner{get; private set;}
     public string Name{get; protected set;}
@@ -11,9 +11,16 @@ public abstract class Item {
     public float CooldownTimer{get; private set;}
     public bool isReady{get; private set;}
 
-    public Item(CarController Owner){
+    public Item(CarController Owner){ // TODO delete
         this.Owner = Owner;
         this.isReady = true;
+    }
+
+    public Item(CarController Owner, string Name){
+        this.Owner = Owner;
+        this.Name = Name;
+        this.isReady = true;
+        this.Cooldown = GetPrefab().GetComponent<ItemEffect>().GetCooldown();
     }
 
     public void Use(){

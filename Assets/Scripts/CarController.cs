@@ -37,19 +37,19 @@ public class CarController : MonoBehaviour
         this.State = new OnTrackState(this);
         // TEMP cycler à travers les items
         offensiveItems = new Item[] { 
-            new MissileItem(this),
-            new GuidedMissileItem(this),
-            new BladeItem(this), 
-            new HarpoonItem(this),
-            new MineItem(this),
-            new SlowMineItem(this)
+            new Item(this, Missile.Name),
+            new Item(this, GuidedMissile.Name),
+            new Item(this, Blade.Name), 
+            new Item(this, Harpoon.Name),
+            new Item(this, Mine.Name),
+            new Item(this, SlowMine.Name)
         };
         defensiveItems = new Item[] { 
-            new ShieldItem(this), 
-            new ReflectShieldItem(this),
-            new GhostItem(this),
-            new BoostItem(this),
-            new InvincibleBoostItem(this)
+            new Item(this, Shield.Name), 
+            new Item(this, ReflectShield.Name),
+            new Item(this, Ghost.Name),
+            new Item(this, Boost.Name),
+            new Item(this, InvincibleBoost.Name)
         };
         SetItem(0, offensiveItems[0]);
         SetItem(1, defensiveItems[0]);

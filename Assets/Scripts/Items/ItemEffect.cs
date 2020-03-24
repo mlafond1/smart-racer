@@ -8,6 +8,8 @@ public abstract class ItemEffect : MonoBehaviour{
     protected bool initialized = false;
 
     public abstract void InitialSetup(Item item);
+    
+    public abstract float GetCooldown();
 
     public void SetOwner(CarController Owner){
         this.owner = Owner;

@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class Ghost : Shield {
 
+    new public const string Name = "ghost";
+    const float cooldown = 8;
+    const float duration = 4;
+
     public override void InitialSetup(Item item){
-        GhostItem ghostItem = (GhostItem)item;
-        InitialSetup(ghostItem, ghostItem.Duration);
+        InitialSetup(item, duration);
+    }
+
+    public override float GetCooldown(){
+        return cooldown;
     }
 
     protected override void ToggleOtherEffects(bool ignore){

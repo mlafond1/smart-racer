@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class ReflectShield : Shield {
 
+    new public const string Name = "reflect";
+    const float cooldown = 7;
+    const float duration = 3;
+
     public override void InitialSetup(Item item){
-        ReflectShieldItem reflectShieldItem = (ReflectShieldItem)item;
-        InitialSetup(reflectShieldItem, reflectShieldItem.Duration);
+        InitialSetup(item, duration);
+    }
+
+    public override float GetCooldown(){
+        return cooldown;
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision){

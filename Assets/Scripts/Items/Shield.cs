@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class Shield : ItemEffect{
 
-    float duration;
+    public const string Name = "shield";
+    const float cooldown = 6;
+    private float duration = 3;
+
     protected Collider2D ownerCollider;
 
     public override void InitialSetup(Item item){
-        ShieldItem shieldItem = (ShieldItem)item;
-        InitialSetup(shieldItem, shieldItem.Duration);
+        InitialSetup(item, duration);
+    }
+
+    public override float GetCooldown(){
+        return cooldown;
     }
 
     protected void InitialSetup(Item item, float shieldDuration){

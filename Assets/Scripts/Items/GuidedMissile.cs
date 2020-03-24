@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class GuidedMissile : ItemEffect {
 
+    public const string Name = "guided-missile";
+    const float cooldown = 7;
+
+    float speed = 30;
+    float power = 12;
+    float damage = 15;
+    float lossOfControlTime = 0.3f;
+
     bool foundFirstCheckpoint = false;
     bool isGoingForward;
     int checkpointIndex = 0;
@@ -17,11 +25,6 @@ public class GuidedMissile : ItemEffect {
     float maxLaunchSpeedDuration = 2f;
     float launchSpeedDuration = 0f;
 
-    float speed = 30;
-    float power = 12;
-    float damage = 15;
-    float lossOfControlTime = 0.3f;
-
     void Start(){
         rb = gameObject.GetComponent<Rigidbody2D>();
         missileCollider = gameObject.GetComponent<Collider2D>();
@@ -30,7 +33,6 @@ public class GuidedMissile : ItemEffect {
     }
 
     public override void InitialSetup(Item item){
-        GuidedMissileItem missileItem = (GuidedMissileItem)item;
         SetOwner(item.Owner);
         Vector3 aimedPosition = owner.GetAimedPositon();
         isGoingForward = 
@@ -41,6 +43,10 @@ public class GuidedMissile : ItemEffect {
         launchVelocity = owner.gameObject.GetComponent<Rigidbody2D>().velocity;
         launchSpeedDuration = maxLaunchSpeedDuration;
         initialized = true;
+    }
+
+    public override float GetCooldown(){
+        return cooldown;
     }
 
     private void CycleIndex(){
