@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,13 @@ public class InvincibleBoost : Shield {
             directionAway.z = 0;
             otherCar.ChangeState(new LossOfControlState(otherCar.State, 0.07f));
             collision.rigidbody.AddForce(directionAway.normalized * owner.Statistics.power * otherCar.Statistics.ejectionRate, ForceMode2D.Impulse);
+            StartCoroutine(IgnoreMultiHit(collision.collider));
         }
     }
 
+    private IEnumerator IgnoreMultiHit(Collider2D collider){
+        Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collider, true);
+        yield return new WaitForSeconds(.2f);
+        Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collider, false);
+    }
 }
