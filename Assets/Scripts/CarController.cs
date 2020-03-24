@@ -38,6 +38,7 @@ public class CarController : MonoBehaviour
         // TEMP cycler à travers les items
         offensiveItems = new Item[] { 
             new MissileItem(this),
+            new GuidedMissileItem(this),
             new BladeItem(this), 
             new HarpoonItem(this),
             new MineItem(this),
