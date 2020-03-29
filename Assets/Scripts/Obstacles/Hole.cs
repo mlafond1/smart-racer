@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Hole : Obstacle
 {
+    float duration = 5f;
     private void OnTriggerEnter2D(Collider2D other)
     {
         this.Comportement(other);
@@ -13,6 +14,7 @@ public class Hole : Obstacle
         CarController car = collider.gameObject.GetComponent<CarController>();
         if (car != null)
         {
+            //car.ChangeState(new FallState (car.State, duration, this.transform.position));
             car.Respawn();
         }
     }

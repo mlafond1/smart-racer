@@ -23,7 +23,7 @@ public class Ramp : Obstacle
         if (car != null)
         {
            float duration = CalcDuration(car.State.CurrentSpeed());
-           car.ChangeState(new JumpState(car, duration));
+            car.ChangeState(new JumpState(car.State, duration));
         }
     }
 
