@@ -8,6 +8,7 @@ public class JumpState : LossOfControlState {
     private float originalDrag;
     private int originalLayer;
     private float sizeChangeFactor = 0.1f;
+    private string jumpingLayerName = "JumpLayer";
     public JumpState(CarController controller, float duration) : this(controller.State, duration){}
 
     public JumpState(CarState old, float duration) : base(old, duration)
@@ -19,7 +20,8 @@ public class JumpState : LossOfControlState {
         this.originalLayer = controller.gameObject.layer;
         // Set drag 0 so theres no deceleration
         rb.drag = 0;
-        controller.gameObject.layer++;
+        // Set layer to jumping layer
+        controller.gameObject.layer = LayerMask.NameToLayer(jumpingLayerName);
         // If jumping ignore not jumping layers
         Physics2D.IgnoreLayerCollision(originalLayer, controller.gameObject.layer, true);
     }
