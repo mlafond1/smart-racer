@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Hole : Obstacle
 {
-    float duration = 5f;
+    // float duration = 5f;
     private void OnTriggerEnter2D(Collider2D other)
     {
         this.Comportement(other);
