@@ -53,7 +53,7 @@ public class Wall : Obstacle
         foreach (Brick brick in tmp)
         {
             // Select only bricks from this wall
-            if (brick.transform.parent.name == this.name)
+            if (brick.transform.IsChildOf(this.transform))
             {
                 bricks.Add(brick);
             }
