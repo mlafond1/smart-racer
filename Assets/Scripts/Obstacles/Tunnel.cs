@@ -29,6 +29,6 @@ public class Tunnel : Obstacle
             Debug.Log(car.State.GetType() + ":TunnelExit");
         }
     }
-    public override void Comportement(Collider2D collider){}
+    //public override void Comportement(Collider2D collider){}
 
 }
