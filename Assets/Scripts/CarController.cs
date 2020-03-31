@@ -131,11 +131,17 @@ public class CarController : MonoBehaviour
     }
 
     public void Respawn(){
-        this.transform.position = this.respawnpoint.transform.position;
+        Vector3 tmp = this.transform.position;
+        tmp.x = this.respawnpoint.transform.position.x;
+        tmp.y = this.respawnpoint.transform.position.y;
+        this.transform.position = tmp;
     }
 
     public void Respawn(Collider2D respawnpoint_){
-        this.transform.position = respawnpoint_.transform.position;
+        Vector3 tmp = this.transform.position;
+        tmp.x = respawnpoint_.transform.position.x;
+        tmp.y = respawnpoint_.transform.position.y;
+        this.transform.position = tmp;
     }
     void OnCollisionEnter2D(Collision2D collision){
         CarController otherCar;

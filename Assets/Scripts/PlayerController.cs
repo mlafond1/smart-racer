@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
 
     CarController carController;
+    [SerializeField]
+    Collider2D finishLine = null;//TODO
 
     void Start(){
         carController = GetComponent<CarController>();
@@ -20,6 +22,16 @@ public class PlayerController : MonoBehaviour
             carController.Aim(GetMousePosition());
             carController.UseItem(1);
         }
+        // TODO Delete after debug
+        if (Input.GetKeyDown("r"))
+        {
+            carController.Respawn();
+        }
+        if (Input.GetKeyDown("t"))
+        {
+            carController.Respawn(finishLine);
+        }
+        // TODO
     }
 
     void FixedUpdate(){
