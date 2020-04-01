@@ -2,15 +2,21 @@ using UnityEngine;
 //using UnityEngine.Experimental.Rendering.​Universal;
 public class Tunnel : Obstacle
 {
-    [SerializeField]
+    // [SerializeField]
     private GameObject global = null;
     [SerializeField]
-    private string playerName = null;
+    private PlayerController player = null;
+    private string globalLightName = "Global Light 2D";
 
+    private void Awake() {
+        global = GameObject.Find(globalLightName);
+        player = GameObject.FindObjectOfType<PlayerController>();
+
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        CarController car = other.gameObject.GetComponent<CarController>();
-        if(car != null && car.name == this.playerName)
+        PlayerController car = other.gameObject.GetComponent<PlayerController>();
+        if(car != null && car == this.player)
         {
             car.transform.Find("Lights").gameObject.SetActive(true);
             car.gameObject.GetComponent<SpriteRenderer>().enabled = false;
@@ -20,15 +26,12 @@ public class Tunnel : Obstacle
 
     private void OnTriggerExit2D(Collider2D other) 
     {
-        CarController car = other.gameObject.GetComponent<CarController>();
-        if (car != null && car.name == this.playerName)
+        PlayerController car = other.gameObject.GetComponent<PlayerController>();
+        if (car != null && car == this.player)
         {
             car.transform.Find("Lights").gameObject.SetActive(false);
             car.gameObject.GetComponent<SpriteRenderer>().enabled = true;
             this.global.SetActive(true);
-            Debug.Log(car.State.GetType() + ":TunnelExit");
         }
     }
-    //public override void Comportement(Collider2D collider){}
-
 }

@@ -63,11 +63,13 @@ public class TimeTrialMode : MonoBehaviour
         foreach (var item in raceInfos){
             CarController car = item.Key;
             CarRaceInfo info  = item.Value;
-            Debug.DrawLine(car.transform.position, info.NextCheckpoint.transform.position, Color.yellow);
+            // TODO -- Next checkpoint
+            // ** Debug.DrawLine(car.transform.position, info.NextCheckpoint.transform.position, Color.yellow);
             if(info.carCollider.IsTouching(info.NextCheckpoint)){
                 ProceedToNextCheckpoint(car, info);
             }
-            Debug.DrawLine(car.transform.position, car.respawnpoint.transform.position, Color.blue);
+            // TODO -- Car RespawnPoint
+            // ** Debug.DrawLine(car.transform.position, car.respawnpoint.transform.position, Color.blue);
         }
     }
 

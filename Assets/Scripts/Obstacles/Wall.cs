@@ -8,12 +8,19 @@ public class Wall : Obstacle
     private List<Brick> bricks;
     [SerializeField]
     private float resetDelay = 10f; // seconds
+    [SerializeField]
+    private float bricksMass = 1f;
+    private float zPosition = -2.585f;
 
     // Start is called before the first frame update
     private void Awake()
     {
+        Vector3 tmp = transform.position;
+        tmp.z = zPosition;
+        this.transform.position = tmp;
         bricks = new List<Brick>();
         FilterBricks();
+        SetBricksMass(bricksMass);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -46,6 +53,12 @@ public class Wall : Obstacle
         this.GetComponent<BoxCollider>().enabled = true;
     }
 
+    public void SetBricksMass(float newMass){
+        foreach (Brick brick in bricks)
+        {
+            brick.GetComponent<Rigidbody>().mass = newMass;
+        }
+    }
     public void FilterBricks()
     {
         // Get all bricks in game

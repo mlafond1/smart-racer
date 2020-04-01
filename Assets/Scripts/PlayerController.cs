@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
             carController.Respawn(finishLine);
         }
         // TODO
+        Debug.DrawRay(this.transform.position, this.GetComponent<Rigidbody2D>().velocity, Color.blue);
+        // TODO
     }
 
     void FixedUpdate(){
