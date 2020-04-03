@@ -59,4 +59,6 @@ public class SlowedState : NormalState {
         }
         controller.ChangeState(nextState);
     }
+
+    public float GetSlowModifier(){ return slowModifier;}
 }

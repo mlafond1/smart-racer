@@ -22,6 +22,11 @@ public class Ramp : Obstacle
             this.Comportement(other);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        CarController car = other.gameObject.GetComponent<CarController>();
+        if(car != null) car.ChangeState(new OnTrackState(car.State));
+    }
     public override void Comportement(Collider2D collider)
     {
         CarController car = collider.gameObject.GetComponent<CarController>();
