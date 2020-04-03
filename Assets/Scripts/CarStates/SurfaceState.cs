@@ -10,6 +10,8 @@ public class SurfaceState : NormalState
     private CarState nextState;
     private float ogDrag;
     private float trailDuration;
+
+    private float newDrift;
     private Surface surface;
 
     public SurfaceState(CarController controller, float friction, float drag, float trailDuration, Surface surface) :
@@ -18,11 +20,10 @@ public class SurfaceState : NormalState
 
     public SurfaceState(CarState old, float friction, float drag, float trailDuration, Surface surface) : base(old)
     {
-        this.friction = friction > 0 ? 1 / friction : 1;
+        this.friction = friction > 0 ? (1 / friction) : 1;
+        this.newDrift = drag > 1 ? (1 / drag) : 1;
         this.ogDrag = controller.GetComponent<Rigidbody2D>().drag;
-        //controller.GetComponent<Rigidbody2D>().drag = drag;
-        controller.GetComponent<Rigidbody2D>().drag = friction;
-        // Debug.Log(old.GetType() + ":oldState");
+        controller.GetComponent<Rigidbody2D>().drag = drag;
         this.nextState = old;
         this.trailDuration = trailDuration;
         this.surface = surface;
@@ -30,11 +31,22 @@ public class SurfaceState : NormalState
 
     public override void Accelerate()
     {
-        rb.AddForce(transform.up * statistics.maxSpeed * friction);
+        Vector3 newForce = transform.up * (statistics.maxSpeed * friction);
+        rb.AddForce(newForce.sqrMagnitude <= transform.up.sqrMagnitude ? transform.up : newForce);
     }
     public override void Brake()
     {
-        rb.AddForce(transform.up * (-statistics.maxSpeed / 1.5f) * friction);
+        Vector3 newForce = transform.up * ((-statistics.maxSpeed / 1.5f) * friction);
+        rb.AddForce(newForce.sqrMagnitude <= transform.up.sqrMagnitude ? transform.up : newForce);
+    }
+
+    public override void Drive()
+    {
+        rb.rotation -= CurrentSpeed() * horizontalAxis * statistics.torqueSpeed * newDrift * Time.deltaTime;
+
+        float newDriftPercentage = newDrift; // * PercentOfMaxSpeed();
+        rb.velocity = ForwardVelocity() + (RightVelocity() * newDriftPercentage);
+        //rb.angularVelocity = 0.0f;
     }
 
     public override bool CanChangeState(CarState newState)
@@ -47,67 +59,28 @@ public class SurfaceState : NormalState
         {
             // If slower than current surface
             SlowedState slow = (SlowedState)newState;
-            // if (slow.GetSlowModifier() > friction) return false;
             change = slow.GetSlowModifier() < friction;
         }
         else if (newStateType == typeof(SurfaceState))
         {
             // If slower than current surface
             SurfaceState other = (SurfaceState)newState;
-            //this.trailDuration += other.trailDuration;
-            // if (other.friction > friction) return false;
             change = other.friction <= friction;
         }
         else if (newStateType == typeof(BoostedState))
         {
             Debug.Log("Boosted");
-            // controller.GetComponent<Rigidbody2D>().drag = ogDrag;
-            // return true;
             change = true;
         }
         Debug.Log("Controller touching surface: " + controller.GetComponent<Collider2D>().IsTouching(surface.GetComponent<Collider2D>()));
 
-        // change = controller.GetComponent<Collider2D>().IsTouching(surface.GetComponent<Collider2D>()) && change;
         // If out of surface and no trail you can change
         if (!controller.GetComponent<Collider2D>().IsTouching(surface.GetComponent<Collider2D>()) && trailDuration <= 0)
         {
             change = true;
         }
-        // Else start trail
-        // else
-        // {
-        //      OnStateExit();
-        // }
-        // {
-        //     change = false;
-        // }
-        // else
-        // {
-        //     if (trailDuration <= 0)
-        //     {
-        //         change = true;
-        //     }
-        //     // if (trailDuration <= 0 && nextState.GetType() != typeof(SurfaceState))
-        //     // {
-        //     //     Debug.Log("Else state (no touching surface and trailDuration <=0)");
-        //     //     controller.GetComponent<Rigidbody2D>().drag = ogDrag;
-        //     //     return true;
-        //     // }
-        // }
-        // Don't change if 
-        // if (!controller.GetComponent<Collider2D>().IsTouching(surface.GetComponent<Collider2D>()))
-        // {
-        //     return false;
-        // }
-        // If trail is over && current state isn't surface state
-        // if (trailDuration <= 0 && nextState.GetType() != typeof(SurfaceState))
-        // {
-        //     Debug.Log("Else state (no touching surface and trailDuration <=0)");
-        //     controller.GetComponent<Rigidbody2D>().drag = ogDrag;
-        //     return true;
-        // }
         if (!change) this.nextState = newState;
-        else controller.GetComponent<Rigidbody2D>().drag = ogDrag;
+        else ResetValues();
 
         return change;
     }
@@ -116,34 +89,52 @@ public class SurfaceState : NormalState
     {
         trailDuration = 0;
     }
-    public override void OnStateEnter()
-    {
-        //if(trailDuration > 0){
-        //     Debug.Log(trailDuration + ":trail duration = 0");
-        //     controller.StartCoroutine(WaitDuration());
-        // }
-
-    }
+    public override void OnStateEnter() { }
 
     public void OnStateExit()
     {
-        //if (trailDuration > 0) controller.StartCoroutine(WaitDuration());
-        //else controller.ChangeState(nextState);
-        controller.ChangeState(nextState);
+        if (trailDuration > 0)
+        {   
+            controller.GetComponent<TrailRenderer>().time = trailDuration;
+            controller.GetComponent<TrailRenderer>().enabled = true;
+            controller.StartCoroutine(TrailRender());
+            controller.StartCoroutine(WaitDuration());
+        }
+        else controller.ChangeState(nextState);
     }
 
+    private IEnumerator TrailRender(){
+        float currentTime = 0;
+        controller.GetComponent<TrailRenderer>().endColor = Color.black;
+        controller.GetComponent<TrailRenderer>().startColor = Color.black;
+        while (currentTime < trailDuration)
+        {
+            controller.GetComponent<TrailRenderer>().endColor = Color.Lerp(Color.black, Color.clear, currentTime);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+    }
     private IEnumerator WaitDuration()
     {
-        while (trailDuration > 0)
+        float currentTime = 0;
+        while (currentTime < trailDuration)
         {
-            yield return new WaitForSeconds(trailDuration >= 0.1f ? 0.1f : trailDuration);
-            trailDuration -= 0.1f;
+            currentTime += Time.deltaTime;
+            yield return null;
         }
+        trailDuration = 0f;
         controller.ChangeState(nextState);
     }
 
     public CarState GetState()
     {
         return nextState;
+    }
+
+    public void ResetValues()
+    {
+        controller.GetComponent<Rigidbody2D>().drag = ogDrag;
+        controller.GetComponent<TrailRenderer>().enabled = false;
+        controller.GetComponent<TrailRenderer>().time = 0;
     }
 }

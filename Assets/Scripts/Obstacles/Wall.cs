@@ -10,6 +10,8 @@ public class Wall : Obstacle
     private float resetDelay = 10f; // seconds
     [SerializeField]
     private float bricksMass = 1f;
+    [SerializeField]
+    private bool dynamic = false;
     private float zPosition = -2.585f;
 
     // Start is called before the first frame update
@@ -21,6 +23,7 @@ public class Wall : Obstacle
         bricks = new List<Brick>();
         FilterBricks();
         SetBricksMass(bricksMass);
+        this.GetComponentInChildren<BoxCollider2D>().enabled = !dynamic;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -51,6 +54,7 @@ public class Wall : Obstacle
             brick.ResetOriginalState();
         }
         this.GetComponent<BoxCollider>().enabled = true;
+        this.GetComponentInChildren<BoxCollider2D>().enabled = !dynamic;
     }
 
     public void SetBricksMass(float newMass){

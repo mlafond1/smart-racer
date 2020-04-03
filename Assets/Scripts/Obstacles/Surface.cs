@@ -4,9 +4,9 @@ public class Surface : Obstacle
 {
     // Higher friction = slower
     [SerializeField]
-    private float friction = 0f;
+    private float accelerationDampener = 2f;
     [SerializeField]
-    private float drag = 1f;
+    private float friction = 0f;
     [SerializeField]
     private float trailDuration = 0f;
     private SurfaceState surface = null;
@@ -17,7 +17,7 @@ public class Surface : Obstacle
         if (car != null)
         {
             Debug.Log("Enter trigger");
-            surface = new SurfaceState(car.State, friction, drag, 0, this);
+            surface = new SurfaceState(car.State, accelerationDampener, friction, trailDuration, this);
             car.ChangeState(surface);
         }
 
@@ -27,11 +27,5 @@ public class Surface : Obstacle
         Debug.Log("Exit trigger");
         CarController car = other.gameObject.GetComponent<CarController>();
         surface.OnStateExit();
-        //car.ChangeState(surface.GetState());
-        // if (trailDuration > 0 && car != null)
-        // {
-        //     Debug.Log("Exit");
-        //     car.ChangeState(new SurfaceState(car.State, friction, drag, trailDuration, this));
-        // }
     }
 }
