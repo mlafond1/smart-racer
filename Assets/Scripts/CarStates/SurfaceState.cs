@@ -51,7 +51,6 @@ public class SurfaceState : NormalState
 
     public override bool CanChangeState(CarState newState)
     {
-        Debug.Log("Change state to: " + newState.GetType());
         System.Type newStateType = newState.GetType();
         bool change = false;
         // States that can override SurfaceState
@@ -69,10 +68,8 @@ public class SurfaceState : NormalState
         }
         else if (newStateType == typeof(BoostedState))
         {
-            Debug.Log("Boosted");
             change = true;
         }
-        Debug.Log("Controller touching surface: " + controller.GetComponent<Collider2D>().IsTouching(surface.GetComponent<Collider2D>()));
 
         // If out of surface and no trail you can change
         if (!controller.GetComponent<Collider2D>().IsTouching(surface.GetComponent<Collider2D>()) && trailDuration <= 0)

@@ -16,7 +16,6 @@ public class Surface : Obstacle
         CarController car = other.gameObject.GetComponent<CarController>();
         if (car != null)
         {
-            Debug.Log("Enter trigger");
             surface = new SurfaceState(car.State, accelerationDampener, friction, trailDuration, this);
             car.ChangeState(surface);
         }
@@ -24,7 +23,6 @@ public class Surface : Obstacle
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log("Exit trigger");
         CarController car = other.gameObject.GetComponent<CarController>();
         surface.OnStateExit();
     }
