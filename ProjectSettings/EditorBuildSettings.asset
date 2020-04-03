@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/project.unity
     guid: 679f9a1c8e963e146b547d640e0a0eea
+  - enabled: 1
+    path: Assets/Scenes/piste2.unity
+    guid: bb81955a6dc81fc478fd82122328d2ce
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e792fe82091211b46ab782d2c6667698,
       type: 2}
