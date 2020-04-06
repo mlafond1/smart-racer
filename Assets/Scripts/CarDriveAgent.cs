@@ -72,7 +72,7 @@ public class CarDriveAgent : Agent
         if (vectorAction[0] > 0) controller.Accelerate();
         else if (vectorAction[0] < 0) controller.Brake();
         // Debug.Log(vectorAction[0]);
-        Debug.Log(vectorAction[1]);
+        // Debug.Log(vectorAction[1]);
         controller.Steer(vectorAction[1]);
 
         if(controller.offTrackCounter >= maxNumTimesOffTrack){
