@@ -20,6 +20,7 @@ public class CarController : MonoBehaviour
 
     Vector3 aimedPosition;
     public Collider2D respawnpoint = null;//TODO remettre private
+    public int offTrackCounter;
 
     Item[] items = new Item[2];
 
@@ -54,6 +55,7 @@ public class CarController : MonoBehaviour
         };
         SetItem(0, offensiveItems[0]);
         SetItem(1, defensiveItems[0]);
+        offTrackCounter = 0;
     }
 
     public void Accelerate(){
@@ -124,6 +126,10 @@ public class CarController : MonoBehaviour
         if(State.CanChangeState(newState)){
             // ** Debug.Log(State.GetType() + ":before");
             State = newState;
+            if(State.GetType() == typeof(OffTrackState)){
+                offTrackCounter++;
+                // Debug.Log(offTrackCounter);
+            }
             State.OnStateEnter();
             // ** Debug.Log(State.GetType() + ":after");
         }
