@@ -64,3 +64,4 @@ UIElementsSchema/UnityEditor.PackageManager.UI.xsd
 UIElementsSchema/UnityEditor.UIElements.Debugger.xsd
 UIElementsSchema/UnityEditor.UIElements.xsd
 UIElementsSchema/UnityEngine.UIElements.xsd
+Packages/manifest.json
