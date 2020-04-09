@@ -14,7 +14,8 @@ public class CarDriveAgent : Agent
 
     private CarController controller;
     private float maxTimeOffTrack = 2f;
-    private int maxNumTimesOffTrack = 5*2;
+    private int maxNumTimesOffTrack = 5;
+    private int offTrackCounter = 0;
     private Coroutine offTrack = null;
     public Transform trace;
     public LinkedList<Transform> rewardGates;
@@ -45,8 +46,10 @@ public class CarDriveAgent : Agent
         controller.SetRespawnpoint(finishLine.GetComponent<Collider2D>());
         controller.Respawn();
         currentGate = rewardGates.First;
-        controller.offTrackCounter = 0;
-        if (offTrack != null){
+        // controller.offTrackCounter = 0;
+        offTrackCounter = 0;
+        if (offTrack != null)
+        {
             controller.StopCoroutine(offTrack);
             offTrack = null;
             // Debug.Log("Stop Chrono Begin");
@@ -55,30 +58,40 @@ public class CarDriveAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation((this.transform.position - currentGate.Value.position).sqrMagnitude);
-        sensor.AddObservation(currentGate.Value.position.normalized);
+        sensor.AddObservation((currentGate.Value.position - this.transform.position).normalized);
+        sensor.AddObservation(currentGate.Value.position);
         // Position of the next gate
-        sensor.AddObservation(currentGate.Next == null? currentGate.List.First.Value.position.normalized: currentGate.Next.Value.position.normalized);
-        sensor.AddObservation(controller.GetComponent<Rigidbody2D>().velocity.normalized);
-        sensor.AddObservation(controller.GetComponent<Transform>().up.normalized);
-        sensor.AddObservation(controller.GetComponent<Transform>().position.normalized);
+        sensor.AddObservation(currentGate.Next == null ? currentGate.List.First.Value.position : currentGate.Next.Value.position);
+        sensor.AddObservation(GetComponent<Rigidbody2D>().velocity.normalized);
+        // Debug.DrawRay(this.transform.position, currentGate.Value.position - this.transform.position, Color.black);
+        // Debug.DrawRay(this.transform.position, GetComponent<Rigidbody2D>().velocity, Color.blue);
+        // Debug.DrawRay(this.transform.position, transform.up, Color.magenta);
+        sensor.AddObservation(this.transform.up.normalized);
+        sensor.AddObservation(this.transform.position);
     }
 
     public override void OnActionReceived(float[] vectorAction)
     {
 
         // Save distance from gate before moving
-        float distance = (this.transform.position - currentGate.Value.position).sqrMagnitude;
+        float distance = (currentGate.Value.position - this.transform.position).sqrMagnitude;
         if (vectorAction[0] > 0) controller.Accelerate();
         else if (vectorAction[0] < 0) controller.Brake();
         // Debug.Log(vectorAction[0]);
         // Debug.Log(vectorAction[1]);
         controller.Steer(vectorAction[1]);
 
-        if(controller.offTrackCounter >= maxNumTimesOffTrack){
-            AddReward(-1f);
-            EndEpisode();
-        }
+        // if (controller.offTrackCounter >= maxNumTimesOffTrack)
+        // if(offTrackCounter >= maxNumTimesOffTrack)
+        // {
+        //     AddReward(-1f);
+        //     EndEpisode();
+        // }
+        // Debug.Log(NormalizeAngleDir(
+        //         Vector3.Angle(
+        //             (currentGate.Value.position - this.transform.position).normalized, GetComponent<Rigidbody2D>().velocity.normalized)));
+        // float angle = NormalizeAngleDir(Vector3.Angle(currentGate.Value.position - this.transform.position, GetComponent<Rigidbody2D>().velocity));
+        // AddReward(angle * (GetComponent<Rigidbody2D>().velocity)));
 
         // If new position is closer to rewardgate
         // if ((this.transform.position - currentGate.Value.position).sqrMagnitude < distance)
@@ -89,22 +102,23 @@ public class CarDriveAgent : Agent
         // {
         //     AddReward(-0.015f);
         // }
-        Debug.DrawLine(controller.transform.position, currentGate.Value.position, Color.yellow);
+        Debug.DrawLine(this.transform.position, currentGate.Value.position, Color.yellow);
         // If touched rewardGate -> reward and move to next gate
-        if (controller.GetComponent<Collider2D>().IsTouching(currentGate.Value.GetComponent<Collider2D>()))
+        if (GetComponent<Collider2D>().IsTouching(currentGate.Value.GetComponent<Collider2D>()))
         {
             // If gate == finish line more rewards
-            if (currentGate.Equals(currentGate.List.First)) AddReward(1f);
-            else AddReward(.5f);
+            if (currentGate.Equals(currentGate.List.First)) AddReward(0.5f);
+            else AddReward(0.1f);
             // After touching proceed to next gate
             currentGate = currentGate.Equals(currentGate.List.Last) ? currentGate.List.First : currentGate.Next;
         }
         // Small reward if staying on track
         if (controller.State.GetType() == typeof(OnTrackState) ||
-            controller.GetComponent<Collider2D>().IsTouching(trackCollider))
+            GetComponent<Collider2D>().IsTouching(trackCollider))
         {
-            AddReward(0.001f);
-            if(offTrack != null){
+            AddReward(0.0001f);
+            if (offTrack != null)
+            {
                 controller.StopCoroutine(offTrack);
                 offTrack = null;
                 // Debug.Log("Stop Chrono On track");
@@ -112,10 +126,18 @@ public class CarDriveAgent : Agent
         }
         else if (controller.State.GetType() == typeof(OffTrackState))
         {
-            AddReward(-0.0015f);
-            if (offTrack == null){
+            //AddReward(-0.015f);
+            if (offTrack == null)
+            {
                 // Debug.Log("Start Chrono");
                 offTrack = controller.StartCoroutine(this.TimeOffTrack());// controller.StopCoroutine(offTrack);
+                // offTrackCounter++;
+                // Debug.Log(offTrackCounter);
+                if (++offTrackCounter >= maxNumTimesOffTrack)
+                {
+                    AddReward(-0.2f);
+                    EndEpisode();
+                }
             }
         }
         //^^^^
@@ -137,17 +159,22 @@ public class CarDriveAgent : Agent
         return actions;
     }
 
-    // private void FixedUpdate()
-    // {
-    //     if (StepCount % 5 == 0)
-    //     {
-    //         RequestDecision();
-    //     }
-    //     else
-    //     {
-    //         RequestAction();
-    //     }
-    // }
+    private float NormalizeAngleDir(float angle)
+    {
+        // Rotate 90 to normalize
+        angle = (angle + 90f) % 360f;
+        // If opposite of 90 degrees then -1
+        float direction = (angle < 180 && angle >= 0) ? 1 : -1;
+        // Turn range to 180 - 0
+        angle -= (angle > 180f) ? 180f : 0f;
+        // Set normalize formula
+        float maximum = 90f;
+        float minimum = (angle > maximum) ? 180f : 0f;
+        // Normalize angle
+        return ((angle - minimum) / (maximum - minimum)) * direction;
+        // angle = ((angle - minimum) / (maximum - minimum)) * direction;
+        // return angle;
+    }
 
     private IEnumerator TimeOffTrack()
     {

@@ -126,10 +126,10 @@ public class CarController : MonoBehaviour
         if(State.CanChangeState(newState)){
             // ** Debug.Log(State.GetType() + ":before");
             State = newState;
-            if(State.GetType() == typeof(OffTrackState)){
-                offTrackCounter++;
-                // Debug.Log(offTrackCounter);
-            }
+            // if(State.GetType() == typeof(OffTrackState)){
+            //     offTrackCounter++;
+            //     Debug.Log(offTrackCounter);
+            // }
             State.OnStateEnter();
             // ** Debug.Log(State.GetType() + ":after");
         }
