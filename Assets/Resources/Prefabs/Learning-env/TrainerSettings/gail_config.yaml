@@ -47,8 +47,8 @@ DriveLearn:
             strength: 0.1
             gamma: 0.99
             encoding_size: 128
-            demo_path: Project/Asset/Resources/Prefabs/Learning-env/Demos/DriveDemo.demo
+            demo_path: C:\UQAM\INM-5151\smart-racer\Assets\Resources\Prefabs\Learning-env\Demos\DriverDemo.demo
     behavioral_cloning:
-        demo_path: Project/Asset/Resources/Prefabs/Learning-env/Demos/DriveDemo.demo
+        demo_path: C:\UQAM\INM-5151\smart-racer\Assets\Resources\Prefabs\Learning-env\Demos\DriverDemo.demo
         strength: 1.0
         steps: 0

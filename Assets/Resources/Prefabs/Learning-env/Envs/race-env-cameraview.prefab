@@ -4474,8 +4474,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   record: 0
-  demonstrationName: 
-  demonstrationDirectory: 
+  demonstrationName: DriverDemo
+  demonstrationDirectory: Assets/Resources/Prefabs/Learning-env/Demos/
 --- !u!1 &3050225940151265129
 GameObject:
   m_ObjectHideFlags: 0
