@@ -58,15 +58,15 @@ public class CarDriveAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation((currentGate.Value.position - this.transform.position).normalized);
+        sensor.AddObservation((currentGate.Value.position - this.transform.position));
         sensor.AddObservation(currentGate.Value.position);
         // Position of the next gate
         sensor.AddObservation(currentGate.Next == null ? currentGate.List.First.Value.position : currentGate.Next.Value.position);
-        sensor.AddObservation(GetComponent<Rigidbody2D>().velocity.normalized);
+        sensor.AddObservation(GetComponent<Rigidbody2D>().velocity);
         // Debug.DrawRay(this.transform.position, currentGate.Value.position - this.transform.position, Color.black);
         // Debug.DrawRay(this.transform.position, GetComponent<Rigidbody2D>().velocity, Color.blue);
         // Debug.DrawRay(this.transform.position, transform.up, Color.magenta);
-        sensor.AddObservation(this.transform.up.normalized);
+        sensor.AddObservation(this.transform.up);
         sensor.AddObservation(this.transform.position);
     }
 
