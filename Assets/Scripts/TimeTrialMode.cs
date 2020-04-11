@@ -84,7 +84,7 @@ public class TimeTrialMode : MonoBehaviour
         info.NextCheckpoint = checkpoints[info.numberOfCheckpoints];
     }
 
-    void ProceedToNextLap(CarController car, CarRaceInfo info){
+    protected virtual void ProceedToNextLap(CarController car, CarRaceInfo info){
         info.numberOfCheckpoints = 0;
         ++info.Lap;
         if(info.Lap > numberOfLaps){
@@ -94,14 +94,18 @@ public class TimeTrialMode : MonoBehaviour
             car.enabled = false;
             info.FinalRaceTime = raceTime;
             if(car.Equals(playerCar)){
-                countdownPanel.text = "Terminé!";
-                countdownPanel.enabled = true;
-                this.enabled = false; // Arrêter le temps
-                ToggleCars(false); // Arrêter les véhicules
+                EndGame();
             }
         } else {
             RefreshLapsPanel();
         }
+    }
+
+    public void EndGame(){
+        countdownPanel.text = "Terminé!";
+        countdownPanel.enabled = true;
+        this.enabled = false; // Arrêter le temps
+        ToggleCars(false); // Arrêter les véhicules
     }
 
     void RefreshLapsPanel(){

@@ -28,8 +28,7 @@ public class FreeRaceMode : TimeTrialMode
         UpdateRanking();
     }
 
-    void UpdateRanking(){
-        
+    protected void UpdateRanking(){
         carInfos.Sort((first, second) => first.CompareTo(second));
         int rank = 1;
         foreach(CarRaceInfo carInfo in carInfos){
