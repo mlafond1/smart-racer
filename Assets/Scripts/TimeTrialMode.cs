@@ -87,6 +87,7 @@ public class TimeTrialMode : MonoBehaviour
     protected virtual void ProceedToNextLap(CarController car, CarRaceInfo info){
         info.numberOfCheckpoints = 0;
         ++info.Lap;
+        info.NextCheckpoint = checkpoints[info.numberOfCheckpoints];
         if(info.Lap > numberOfLaps){
             //TODO Terminer la course/jeu après le dernier tour
             
