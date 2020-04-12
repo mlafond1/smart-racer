@@ -20,20 +20,20 @@ public class Instanciation : MonoBehaviour
         gameManager = GameObject.Find("GameManager");
         GM = gameManager.GetComponent<GameManager>();
 
-        Debug.Log(GM.getPiste());
-        Debug.Log(GM.getGameMode());
+        Debug.Log(GM.GetPiste());
+        Debug.Log(GM.GetGameMode());
 
-        if (GM.getGameMode() == "Tournoi")
+        if (GM.GetGameMode() == "Tournoi")
         {
 
         }
         else
         {
-            creationInstances(GM.getGameMode(), GM.getPiste());
+            CreationInstances(GM.GetGameMode(), GM.GetPiste());
         }        
     }
 
-    private void creationInstances(string mode, int piste)
+    private void CreationInstances(string mode, int piste)
     {
         GameObject prefab = new GameObject();
 

@@ -7,22 +7,22 @@ public class GameManager: MonoBehaviour
     private string gamemode = "";
     private int piste;
 
-    public string getGameMode()
+    public string GetGameMode()
     {
         return this.gamemode;
     }
 
-    public void setGameMode(string _gamemode)
+    public void SetGameMode(string _gamemode)
     {
         this.gamemode = _gamemode;
     }
 
-    public int getPiste()
+    public int GetPiste()
     {
         return this.piste;
     }
 
-    public void setPiste(int id)
+    public void SetPiste(int id)
     {
         this.piste = id;
     }

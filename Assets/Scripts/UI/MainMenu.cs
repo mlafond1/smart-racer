@@ -47,7 +47,7 @@ public void Jouer()
     public void ModesJeu(string mode)
     {
         modesJeu = mode;
-        GM.setGameMode(mode);
+        GM.SetGameMode(mode);
         panelModes.SetActive(false);
 
         //Si le mode sélectionné est Tournoi, il n'y a pas de sélection de piste
@@ -69,7 +69,7 @@ public void Jouer()
     public void PisteCourse(int id)
     {
         pisteCourse = id;
-        GM.setPiste(id);
+        GM.SetPiste(id);
         SceneManager.LoadScene(1);
 
         //À ENLEVER
