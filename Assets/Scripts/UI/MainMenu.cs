@@ -61,7 +61,7 @@ public void Jouer()
         }
 
         //À ENLEVER
-        Debug.Log((string)GM.getGameMode());
+        //Debug.Log((string)GM.getGameMode());
     }
 
     //Le bouton COMMENCER du panelTournoi utilise aussi cette fonction
@@ -73,7 +73,7 @@ public void Jouer()
         SceneManager.LoadScene(1);
 
         //À ENLEVER
-        Debug.Log(GM.getPiste());
+        //Debug.Log(GM.getPiste());
         
 
     }
