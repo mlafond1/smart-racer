@@ -8,7 +8,7 @@ public class DamagePanelDisplay : MonoBehaviour {
     Dictionary<CarController, Text> damagePanelTexts = new Dictionary<CarController, Text>();
 
     void Start(){
-        List<CarController> cars = new List<CarController>(Resources.FindObjectsOfTypeAll<CarController>());
+        List<CarController> cars = new List<CarController>(GameObject.FindObjectsOfType<CarController>());
         Font arial = Resources.GetBuiltinResource<Font>("Arial.ttf");;
         foreach(CarController car in cars){
             GameObject currentTextGameObject = new GameObject("DamageTextCar_" + car.name);
