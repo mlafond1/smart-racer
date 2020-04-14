@@ -87,6 +87,7 @@ public class CarController : MonoBehaviour
 
     public void Aim(Vector3 position){
         this.aimedPosition = position;
+        this.aimedPosition.z = transform.position.z;
     }
 
     public Vector3 GetAimedPositon(){
