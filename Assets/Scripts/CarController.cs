@@ -147,6 +147,7 @@ public class CarController : MonoBehaviour
         tmp.y = this.respawnpoint.transform.position.y;
         this.transform.position = tmp;
         this.transform.up = this.respawnpoint.transform.up;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
     public void Respawn(Collider2D respawnpoint_){
