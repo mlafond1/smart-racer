@@ -19,11 +19,13 @@ public class FreeRaceMode : TimeTrialMode
     }
 
     protected override void Update(){
+        if(gameEnded) return;
         base.Update();
         DisplayRanking();
     }
 
     protected override void FixedUpdate(){
+        if(gameEnded) return;
         base.FixedUpdate();
         UpdateRanking();
     }

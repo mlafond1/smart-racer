@@ -8,6 +8,7 @@ public class TimeTrialMode : MonoBehaviour
 {
     int numberOfLaps = 3;
     float raceTime = 0f;
+    protected bool gameEnded = false;
 
     protected Collider2D finishLine;
     protected List<Collider2D> checkpoints;
@@ -51,11 +52,13 @@ public class TimeTrialMode : MonoBehaviour
     }
 
     protected virtual void Update(){
+        if(gameEnded) return;
         DisplayRaceTime();
         DisplayPlayerSpeed();
     }
 
     protected virtual void FixedUpdate(){
+        if(gameEnded) return;
         TrackLapsForCars();
     }
 
@@ -105,7 +108,7 @@ public class TimeTrialMode : MonoBehaviour
     public void EndGame(){
         countdownPanel.text = "Terminé!";
         countdownPanel.enabled = true;
-        this.enabled = false; // Arrêter le temps
+        gameEnded = true;
         ToggleCars(false); // Arrêter les véhicules
     }
 

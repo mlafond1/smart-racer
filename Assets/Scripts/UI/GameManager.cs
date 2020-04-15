@@ -6,6 +6,9 @@ public class GameManager: MonoBehaviour
 {
     private string gamemode = "";
     private int piste;
+    
+    public int TournamentIndex{get;set;} = 0;
+    public List<int> TournamentTracks{get;set;} = new List<int>();
 
     public string GetGameMode()
     {

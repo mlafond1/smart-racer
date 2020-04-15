@@ -7,7 +7,7 @@ public class Instanciation : MonoBehaviour
     public GameObject prefabScene;    
     public GameObject v_Joueur, v_IA1, v_IA2, v_IA3;
     public GameObject prefabMonteCarlo, prefabLeMans;
-    public GameObject TimeTrial, FreeRace, Elimination;
+    public GameObject TimeTrial, FreeRace, Elimination, Tournament;
 
     //Utilisé par les véhicules IA (script VehiculeIA)
     public GameObject AICheckpoints;   
@@ -31,7 +31,7 @@ public class Instanciation : MonoBehaviour
 
         if (GM.GetGameMode() == "Tournoi")
         {
-
+            CreationInstances(GM.GetGameMode(), GM.TournamentTracks[GM.TournamentIndex]);
         }
         else
         {
@@ -60,7 +60,7 @@ public class Instanciation : MonoBehaviour
 
             //Activation du script TimeTrialMode
             TimeTrial.SetActive(true);            
-        } else if(mode == "CourseLibre" || mode == "Elimination")
+        } else if(mode == "CourseLibre" || mode == "Elimination" || mode == "Tournoi")
         {
             //Création de l'environnement
             InstancierEnvironnement(mode, piste);
@@ -80,12 +80,15 @@ public class Instanciation : MonoBehaviour
             if (mode == "CourseLibre")
             {
                 FreeRace.SetActive(true);
-            } else
+            } else if (mode == "Elimination")
             {
                 Elimination.SetActive(true);
                 //Désactivation du DamagePanel
                 GameObject damagePanel = GameObject.Find("DamagePanel");
                 damagePanel.SetActive(false);
+            } else
+            {
+                Tournament.SetActive(true);
             }
             
         }

@@ -16,12 +16,12 @@ public class MainMenu : MonoBehaviour
     private static string modesJeu;
     private static int pisteCourse;
 
-public void Start()
+    public void Start()
     {
         GM = gameManager.GetComponent<GameManager>();
     }
 
-public void Jouer()
+    public void Jouer()
     {
         panelJouer.SetActive(false);
         panelModes.SetActive(true);
@@ -64,8 +64,6 @@ public void Jouer()
         //Debug.Log((string)GM.getGameMode());
     }
 
-    //Le bouton COMMENCER du panelTournoi utilise aussi cette fonction
-    //et commence toujours un tournoi avec la piste MonteCarlo
     public void PisteCourse(int id)
     {
         pisteCourse = id;
@@ -76,6 +74,14 @@ public void Jouer()
         //Debug.Log(GM.getPiste());
         
 
+    }
+
+    public void CommencerTournoi(){
+        List<int> pistesTournoi = new List<int>{1,2};
+        GM.TournamentTracks = pistesTournoi;
+        GM.TournamentIndex = 0;
+        // TODO Scoreboard à zero
+        SceneManager.LoadScene(1);
     }
 
     public void Quitter()
