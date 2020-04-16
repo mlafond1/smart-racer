@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
     public GameObject panelModes;
     public GameObject panelPiste;
     public GameObject panelTournoi;
+    public GameObject panelML;
     public GameObject gameManager;
     private GameManager GM;
 
@@ -28,19 +29,26 @@ public class MainMenu : MonoBehaviour
     }
 
     public void Retour(GameObject objAfficher) {
-        if(objAfficher == panelModes)
-        {
-            panelPiste.SetActive(false);
-            panelModes.SetActive(true);
-
-        } else if (objAfficher == panelJouer)
+        if (objAfficher == panelModes)
         {
             panelModes.SetActive(false);
             panelJouer.SetActive(true);
-        } else if(objAfficher == panelTournoi)
+
+        } else if (objAfficher == panelPiste)
+        {
+            panelPiste.SetActive(false);
+            panelModes.SetActive(true);       
+
+        } else if (objAfficher == panelTournoi)
         {
             panelTournoi.SetActive(false);
             panelModes.SetActive(true);
+
+        } else if(objAfficher == panelML)
+        {
+            panelML.SetActive(false);
+            panelModes.SetActive(true);
+
         }
     }
 
@@ -54,6 +62,9 @@ public class MainMenu : MonoBehaviour
         if (mode == "Tournoi")
         {
             panelTournoi.SetActive(true);
+        } else if (mode == "ML")
+        {
+            panelML.SetActive(true);
         }
         else
         {
@@ -82,6 +93,11 @@ public class MainMenu : MonoBehaviour
         GM.TournamentIndex = 0;
         // TODO Scoreboard à zero
         SceneManager.LoadScene(1);
+    }
+
+    public void DemoML()
+    {
+        SceneManager.LoadScene(2);
     }
 
     public void Quitter()
