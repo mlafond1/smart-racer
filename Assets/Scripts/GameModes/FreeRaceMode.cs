@@ -6,7 +6,7 @@ using UnityEngine.UI; // Peut ne pas être reconnu dans l'IDE, mais le jeu fonct
 public class FreeRaceMode : TimeTrialMode
 {
 
-    List<CarRaceInfo> carInfos;
+    protected List<CarRaceInfo> carInfos;
     Text playerRankPanel;
 
     protected override void Start(){

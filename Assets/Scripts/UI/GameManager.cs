@@ -9,6 +9,7 @@ public class GameManager: MonoBehaviour
     
     public int TournamentIndex{get;set;} = 0;
     public List<int> TournamentTracks{get;set;} = new List<int>();
+    public Dictionary<string, int> TournamentScores{get;set;} = new Dictionary<string, int>();
 
     public string GetGameMode()
     {

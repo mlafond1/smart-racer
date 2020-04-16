@@ -91,7 +91,7 @@ public class MainMenu : MonoBehaviour
         List<int> pistesTournoi = new List<int>{1,2};
         GM.TournamentTracks = pistesTournoi;
         GM.TournamentIndex = 0;
-        // TODO Scoreboard à zero
+        GM.TournamentScores = new Dictionary<string, int>();
         SceneManager.LoadScene(1);
     }
 

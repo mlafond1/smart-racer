@@ -18,7 +18,7 @@ public class TimeTrialMode : MonoBehaviour
     protected Dictionary<CarController, CarRaceInfo> raceInfos;
 
     Text timePanel;
-    Text countdownPanel;
+    protected Text countdownPanel;
     Text playerLapsPanel;
     Text speedPanel;
 
