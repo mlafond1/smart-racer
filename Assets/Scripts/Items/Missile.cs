@@ -74,6 +74,9 @@ public class Missile : ItemEffect {
             Physics2D.IgnoreCollision(collision.collider, collision.otherCollider);
             return;
         }
+        if(otherEffect?.GetType() == typeof(ReflectShield)){
+            return; //Le renvoi sera fait dans la collision du ReflectShield
+        }
         if(car == null){
             Destroy(this.gameObject);
             return;

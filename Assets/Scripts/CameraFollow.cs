@@ -16,7 +16,7 @@ public class CameraFollow : MonoBehaviour
 
     void Start()
     {
-        cars = new List<CarController>(Resources.FindObjectsOfTypeAll<CarController>());
+        cars = new List<CarController>(GameObject.FindObjectsOfType<CarController>());
         carController = GetComponentInParent<CarController>();
         if(carController != null){
             carIndex = cars.FindIndex((other) => other.Equals(carController));

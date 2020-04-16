@@ -19,7 +19,7 @@ public class Ghost : Shield {
     protected override void ToggleOtherEffects(bool ignore){
         base.ToggleOtherEffects(ignore);
         // Effet passer au travers des autres véhicules
-        CarController[] cars = Resources.FindObjectsOfTypeAll<CarController>();
+        CarController[] cars = GameObject.FindObjectsOfType<CarController>();
         foreach(var car in cars){
             if(!car.Equals(owner)){
                 Physics2D.IgnoreCollision(ownerCollider, car.GetComponent<Collider2D>(), ignore);
@@ -30,5 +30,19 @@ public class Ghost : Shield {
 
     protected override void OnCollisionEnter2D(Collision2D collision){
         // N'arrive pas car en mode trigger
+    }
+
+    private void OnTriggerEnter2D(Collider2D other){
+        GuidedMissile missile;
+        if(other.TryGetComponent<GuidedMissile>(out missile)){
+            missile.IgnoreCar(owner, true);
+        }
+    }
+
+    void OnDestroy(){
+        GuidedMissile[] missiles = GameObject.FindObjectsOfType<GuidedMissile>();
+        foreach(var missile in missiles){
+            missile.IgnoreCar(owner, false);
+        }
     }
 }
