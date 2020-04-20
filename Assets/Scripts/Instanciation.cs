@@ -26,9 +26,6 @@ public class Instanciation : MonoBehaviour
         gameManager = GameObject.Find("GameManager");
         GM = gameManager.GetComponent<GameManager>();
 
-        Debug.Log(GM.GetPiste());
-        Debug.Log(GM.GetGameMode());
-
         if (GM.GetGameMode() == "Tournoi")
         {
             CreationInstances(GM.GetGameMode(), GM.TournamentTracks[GM.TournamentIndex]);
