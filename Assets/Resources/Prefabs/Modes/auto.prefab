@@ -195,7 +195,7 @@ MonoBehaviour:
   - {x: -0.5280422, y: 1.2106334, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: 116004
+  m_InstanceId: 78040
 --- !u!96 &8064295719865157296
 TrailRenderer:
   serializedVersion: 2
@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 00000000
-  m_LightCookieSprite: {fileID: 21300000, guid: eaa640d38537593439fba2e8df54cd4c,
+  m_LightCookieSprite: {fileID: 21300000, guid: 90406e697768db3459575a6ea4c3bcea,
     type: 3}
   m_UseNormalMap: 0
   m_LightOrder: 0

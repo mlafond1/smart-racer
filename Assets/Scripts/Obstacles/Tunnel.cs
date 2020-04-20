@@ -11,8 +11,13 @@ public class Tunnel : Obstacle
     private void Awake() {
         global = GameObject.Find(globalLightName);
         player = GameObject.FindObjectOfType<PlayerController>();
-
     }
+
+    private void Start(){
+        global = GameObject.Find(globalLightName);
+        player = GameObject.FindObjectOfType<PlayerController>();
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         PlayerController car = other.gameObject.GetComponent<PlayerController>();

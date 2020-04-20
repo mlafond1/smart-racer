@@ -24,6 +24,7 @@ public class Surface : Obstacle
     private void OnTriggerExit2D(Collider2D other)
     {
         CarController car = other.gameObject.GetComponent<CarController>();
+        if(car == null) return;
         surface.OnStateExit();
     }
 }
