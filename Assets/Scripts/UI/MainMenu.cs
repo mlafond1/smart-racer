@@ -19,6 +19,12 @@ public class MainMenu : MonoBehaviour
 
     public void Start()
     {
+        var gameManagers = GameObject.FindObjectsOfType<GameManager>();
+        foreach (var item in gameManagers){
+            if(!item.gameObject.Equals(gameManager)){
+                Destroy(item.gameObject);
+            }
+        }
         GM = gameManager.GetComponent<GameManager>();
     }
 

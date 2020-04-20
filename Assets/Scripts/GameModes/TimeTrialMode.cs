@@ -6,6 +6,10 @@ using UnityEngine.UI; // Peut ne pas être reconnu dans l'IDE, mais le jeu fonct
 
 public class TimeTrialMode : MonoBehaviour
 {
+    private enum NextOperation{
+        BaseDisplay, ReturnToMenu, None
+    }
+    private NextOperation next;
     int numberOfLaps = 3;
     float raceTime = 0f;
     protected bool gameEnded = false;
@@ -21,6 +25,12 @@ public class TimeTrialMode : MonoBehaviour
     protected Text countdownPanel;
     Text playerLapsPanel;
     Text speedPanel;
+    protected Text scoreBoardPanel;
+
+    void Awake(){
+        cars = new List<CarController>(GameObject.FindObjectsOfType<CarController>());
+        cars.ForEach(car => car.enabled = false);
+    }
 
     protected virtual void Start()
     {
@@ -28,6 +38,8 @@ public class TimeTrialMode : MonoBehaviour
         countdownPanel = GameObject.Find("CountdownText").GetComponent<Text>();
         playerLapsPanel = GameObject.Find("LapsText").GetComponent<Text>();
         speedPanel = GameObject.Find("SpeedText").GetComponent<Text>();
+        scoreBoardPanel = GameObject.Find("ScoreBoard").GetComponent<Text>();
+        scoreBoardPanel.enabled = false;
 
         checkpoints = new List<Collider2D>(GameObject.Find("RaceCheckpoints").GetComponentsInChildren<Collider2D>());
         finishLine = GameObject.Find("FinishLine").GetComponent<Collider2D>();
@@ -52,9 +64,27 @@ public class TimeTrialMode : MonoBehaviour
     }
 
     protected virtual void Update(){
-        if(gameEnded) return;
-        DisplayRaceTime();
-        DisplayPlayerSpeed();
+        if(!gameEnded){
+            DisplayRaceTime();
+            DisplayPlayerSpeed();
+        }
+        else if(Input.GetKeyDown(KeyCode.Space)){
+            switch(next){
+                case NextOperation.BaseDisplay:
+                    DisplayResult();
+                    next = NextOperation.ReturnToMenu;
+                    break;
+                case NextOperation.ReturnToMenu:
+                    ReturnToMenu();
+                    next = NextOperation.None;
+                    break;
+                case NextOperation.None:
+                default:
+                    Debug.Log(next.ToString());
+                    break;
+            }
+        }
+
     }
 
     protected virtual void FixedUpdate(){
@@ -125,6 +155,21 @@ public class TimeTrialMode : MonoBehaviour
 
     void DisplayPlayerSpeed(){
         speedPanel.text = string.Format("Speed: {0:0.0} us", playerCar.CurrentSpeed());
+    }
+
+    protected virtual void DisplayResult(){
+        string scoreBoardText = "";
+        // Seulement une voiture, mais au cas
+        foreach(CarRaceInfo info in raceInfos.Values){
+            scoreBoardText += info.FormatInfo().Substring(2) + "\n";
+        }
+        countdownPanel.text = "Score";
+        scoreBoardPanel.enabled = true;
+        scoreBoardPanel.text = scoreBoardText;
+    }
+
+    public void ReturnToMenu(){
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
     private IEnumerator Countdown() {

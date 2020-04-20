@@ -129,7 +129,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.7, y: 12.45}
+    oldSize: {x: 5.64, y: 12.38}
     newSize: {x: 6.15, y: 14.1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -177,7 +177,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8064295719865157256}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
   m_Name: 
@@ -195,7 +195,7 @@ MonoBehaviour:
   - {x: -0.5280422, y: 1.2106334, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: 19592
+  m_InstanceId: 116004
 --- !u!96 &8064295719865157296
 TrailRenderer:
   serializedVersion: 2

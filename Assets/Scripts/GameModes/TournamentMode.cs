@@ -14,14 +14,10 @@ public class TournamentMode : FreeRaceMode
     private GameManager manager;
     private Dictionary<CarController, int> scores = new Dictionary<CarController, int>();
 
-    Text scoreBoardPanel;
-
     protected override void Start(){
         base.Start();
         next = NextOperation.BaseDisplay;
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        scoreBoardPanel = GameObject.Find("ScoreBoard").GetComponent<Text>();
-        scoreBoardPanel.enabled = false;
     }
 
     protected override void Update(){
@@ -55,7 +51,7 @@ public class TournamentMode : FreeRaceMode
         base.FixedUpdate();
     }
 
-    public void DisplayResult(){
+    protected override void DisplayResult(){
         string scoreBoardText = "";
         foreach(CarRaceInfo info in carInfos){
             scoreBoardText += info.FormatInfo() + "\t+" + CalculateScoreForCar(info) + " pts\n";
@@ -65,7 +61,7 @@ public class TournamentMode : FreeRaceMode
         scoreBoardPanel.text = scoreBoardText;
     }
 
-    public void DisplayCumulativeResult(){
+    private void DisplayCumulativeResult(){
         foreach(var car in cars){
             if(!manager.TournamentScores.ContainsKey(car.name)){
                 manager.TournamentScores.Add(car.name, 0);
