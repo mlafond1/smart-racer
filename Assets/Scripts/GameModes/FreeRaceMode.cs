@@ -19,8 +19,8 @@ public class FreeRaceMode : TimeTrialMode
     }
 
     protected override void Update(){
-        if(gameEnded) return;
         base.Update();
+        if(gameEnded) return;
         DisplayRanking();
     }
 
@@ -42,5 +42,16 @@ public class FreeRaceMode : TimeTrialMode
     void DisplayRanking(){
         int playerRanking = raceInfos[playerCar].RankingInRace;
         playerRankPanel.text = string.Format("Rank: {0}", playerRanking);
+    }
+
+    protected override void DisplayResult(){
+        string scoreBoardText = "";
+        // Ordonné selon ranking
+        foreach(CarRaceInfo info in carInfos){
+            scoreBoardText += info.FormatInfo() + "\n";
+        }
+        countdownPanel.text = "Score";
+        scoreBoardPanel.enabled = true;
+        scoreBoardPanel.text = scoreBoardText;
     }
 }
