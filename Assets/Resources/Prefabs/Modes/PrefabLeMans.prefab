@@ -5746,6 +5746,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: dirt
       objectReference: {fileID: 0}
+    - target: {fileID: 2562812057629380565, guid: 8e827bbeec0ac7a4684e324defa0e96c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e827bbeec0ac7a4684e324defa0e96c, type: 3}
 --- !u!4 &3348266971357279170 stripped
@@ -5765,6 +5770,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: oil
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323913024763977705, guid: 5679456ab84a4e046900bdf2cba831a7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6323913024763977710, guid: 5679456ab84a4e046900bdf2cba831a7,
         type: 3}
@@ -13715,6 +13725,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ice
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407956913940417860, guid: f96c71f395630df41b51fd0ec98fb97e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1407956913940417863, guid: f96c71f395630df41b51fd0ec98fb97e,
         type: 3}

@@ -558,6 +558,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: race-env-cameraview
       objectReference: {fileID: 0}
+    - target: {fileID: 3050225940377097994, guid: 4eef521608a150846bc84c69bd5cba11,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4eef521608a150846bc84c69bd5cba11, type: 3}
 --- !u!1001 &613571225

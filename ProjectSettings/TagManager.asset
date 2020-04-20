@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ontrack
   - TrackWall
+  - IA_Checkpoints
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Track
   - Surfaces
   - TrackWall
-  - 
+  - IA_Checkpoints
   - 
   - 
   - 
