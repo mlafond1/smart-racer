@@ -2669,7 +2669,7 @@ MonoBehaviour:
     vectorActionSize: 02000000
     vectorActionDescriptions: []
     vectorActionSpaceType: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: c2df948243e8db9499ece07bc7c039cc, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: DriveLearn
@@ -2690,7 +2690,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  maxStep: 4000
+  maxStep: 0
   track: {fileID: 2434422417568082736}
   finishLine: {fileID: 2434422417937251865}
   trace: {fileID: 2434422416942745342}

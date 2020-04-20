@@ -49,13 +49,13 @@ public class CarDriveAgent : Agent
     public override void OnEpisodeBegin()
     {
         currentGate = rewardGates.First;
-        for (int i = 0; i < 2; i++)
-        {
-            currentGate = currentGate.Next;
-        }
+        // for (int i = 0; i < 2; i++)
+        // {
+        //     currentGate = currentGate.Next;
+        // }
         // controller.SetRespawnpoint(finishLine.GetComponent<Collider2D>());
-        controller.SetRespawnpoint(currentGate.Previous.Value.GetComponent<Collider2D>());
-        controller.Respawn();
+        // controller.SetRespawnpoint(currentGate.Previous.Value.GetComponent<Collider2D>());
+        // controller.Respawn();
         // controller.offTrackCounter = 0;
         offTrackCounter = 0;
         if (offTrack != null)
