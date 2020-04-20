@@ -8,6 +8,7 @@ public class TimeTrialMode : MonoBehaviour
 {
     int numberOfLaps = 3;
     float raceTime = 0f;
+    protected bool gameEnded = false;
 
     protected Collider2D finishLine;
     protected List<Collider2D> checkpoints;
@@ -17,7 +18,7 @@ public class TimeTrialMode : MonoBehaviour
     protected Dictionary<CarController, CarRaceInfo> raceInfos;
 
     Text timePanel;
-    Text countdownPanel;
+    protected Text countdownPanel;
     Text playerLapsPanel;
     Text speedPanel;
 
@@ -51,11 +52,13 @@ public class TimeTrialMode : MonoBehaviour
     }
 
     protected virtual void Update(){
+        if(gameEnded) return;
         DisplayRaceTime();
         DisplayPlayerSpeed();
     }
 
     protected virtual void FixedUpdate(){
+        if(gameEnded) return;
         TrackLapsForCars();
     }
 
@@ -84,9 +87,10 @@ public class TimeTrialMode : MonoBehaviour
         info.NextCheckpoint = checkpoints[info.numberOfCheckpoints];
     }
 
-    void ProceedToNextLap(CarController car, CarRaceInfo info){
+    protected virtual void ProceedToNextLap(CarController car, CarRaceInfo info){
         info.numberOfCheckpoints = 0;
         ++info.Lap;
+        info.NextCheckpoint = checkpoints[info.numberOfCheckpoints];
         if(info.Lap > numberOfLaps){
             //TODO Terminer la course/jeu après le dernier tour
             
@@ -94,14 +98,18 @@ public class TimeTrialMode : MonoBehaviour
             car.enabled = false;
             info.FinalRaceTime = raceTime;
             if(car.Equals(playerCar)){
-                countdownPanel.text = "Terminé!";
-                countdownPanel.enabled = true;
-                this.enabled = false; // Arrêter le temps
-                ToggleCars(false); // Arrêter les véhicules
+                EndGame();
             }
         } else {
             RefreshLapsPanel();
         }
+    }
+
+    public void EndGame(){
+        countdownPanel.text = "Terminé!";
+        countdownPanel.enabled = true;
+        gameEnded = true;
+        ToggleCars(false); // Arrêter les véhicules
     }
 
     void RefreshLapsPanel(){

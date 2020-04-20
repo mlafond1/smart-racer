@@ -6,7 +6,7 @@ using UnityEngine.UI; // Peut ne pas être reconnu dans l'IDE, mais le jeu fonct
 public class FreeRaceMode : TimeTrialMode
 {
 
-    List<CarRaceInfo> carInfos;
+    protected List<CarRaceInfo> carInfos;
     Text playerRankPanel;
 
     protected override void Start(){
@@ -19,17 +19,18 @@ public class FreeRaceMode : TimeTrialMode
     }
 
     protected override void Update(){
+        if(gameEnded) return;
         base.Update();
         DisplayRanking();
     }
 
     protected override void FixedUpdate(){
+        if(gameEnded) return;
         base.FixedUpdate();
         UpdateRanking();
     }
 
-    void UpdateRanking(){
-        
+    protected void UpdateRanking(){
         carInfos.Sort((first, second) => first.CompareTo(second));
         int rank = 1;
         foreach(CarRaceInfo carInfo in carInfos){

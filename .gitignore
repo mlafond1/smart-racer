@@ -65,3 +65,6 @@ UIElementsSchema/UnityEditor.UIElements.Debugger.xsd
 UIElementsSchema/UnityEditor.UIElements.xsd
 UIElementsSchema/UnityEngine.UIElements.xsd
 Packages/manifest.json
+Packages/manifest.json
+ProjectSettings/EditorBuildSettings.asset
+ProjectSettings/QualitySettings.asset

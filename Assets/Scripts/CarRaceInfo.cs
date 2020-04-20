@@ -33,4 +33,14 @@ public class CarRaceInfo {
         return thisDistance.CompareTo(otherDistance);
     }
 
+    public string FormatInfo(){
+        bool needAdditionalTab = carCollider.name.Length <= 4;
+        if(FinalRaceTime == float.PositiveInfinity){
+            return string.Format("#{0} {1}:\t{2}--:--.---\t\t", RankingInRace, carCollider.name, needAdditionalTab ? "\t\t" : "");
+        }
+        int minutes = (int) (FinalRaceTime/60f);
+        float secondsAndMillis = FinalRaceTime - ((float)minutes*60f);
+        return string.Format("#{0} {1}:\t{2}{3:00}:{4:00.000}", RankingInRace, carCollider.name, needAdditionalTab ? "\t\t" : "", minutes, secondsAndMillis);
+    }
+
 }

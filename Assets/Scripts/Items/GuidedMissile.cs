@@ -24,6 +24,8 @@ public class GuidedMissile : ItemEffect {
     Rigidbody2D rb;
     Collider2D missileCollider;
 
+    HashSet<CarController> ignoredCars = new HashSet<CarController>();
+
     float maxLaunchSpeedDuration = 2f;
     float launchSpeedDuration = 0f;
 
@@ -31,7 +33,7 @@ public class GuidedMissile : ItemEffect {
         rb = gameObject.GetComponent<Rigidbody2D>();
         missileCollider = gameObject.GetComponent<Collider2D>();
         checkpoints = new List<Collider2D>(GameObject.Find("AI Checkpoints").GetComponentsInChildren<Collider2D>());
-        cars = new List<CarController>(Resources.FindObjectsOfTypeAll<CarController>());
+        cars = new List<CarController>(GameObject.FindObjectsOfType<CarController>());
     }
 
     public override void InitialSetup(Item item){
@@ -83,6 +85,9 @@ public class GuidedMissile : ItemEffect {
         }
         // Vise la voiture la plus proche si suffisament proche
         if(hasTargetLocked){
+            if(ignoredCars.Contains(lockedCar)){
+                hasTargetLocked = false;
+            }
             Vector2 direction = lockedCar.transform.position - transform.position;
             transform.up = direction;
             rb.velocity = transform.up * speed;
@@ -90,7 +95,7 @@ public class GuidedMissile : ItemEffect {
         else {
             float minDistance = float.PositiveInfinity;
             foreach(var car in cars){
-                if(car.Equals(owner)) continue;
+                if(car.Equals(owner) || ignoredCars.Contains(car)) continue;
                 float distanceAhead = Vector2.Distance(car.transform.position, transform.position + transform.up);
                 Vector2 direction = car.transform.position - transform.position;
                 minDistance = distanceAhead < minDistance ? distanceAhead : minDistance;
@@ -131,6 +136,9 @@ public class GuidedMissile : ItemEffect {
             Physics2D.IgnoreCollision(collision.collider, collision.otherCollider);
             return;
         }
+        if(otherEffect?.GetType() == typeof(ReflectShield)){
+            return; //Le renvoi sera fait dans la collision du ReflectShield
+        }
         if(car == null){
             Destroy(this.gameObject);
             return;
@@ -142,6 +150,17 @@ public class GuidedMissile : ItemEffect {
         collision.rigidbody.velocity = Vector2.zero;
         collision.rigidbody.AddForceAtPosition(missileDirection * power * car.Statistics.ejectionRate, contactPoint.point, ForceMode2D.Impulse);
         Destroy(this.gameObject);
+    }
+
+    // Si le mode fantôme est activé, on ignore la voiture
+    public void IgnoreCar(CarController car, bool ignore){
+        bool contained = ignoredCars.Contains(car);
+        if(ignore && !contained){
+            ignoredCars.Add(car);
+        } 
+        else if (!ignore && contained) {
+            ignoredCars.Remove(car);
+        }
     }
 
 }
