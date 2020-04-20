@@ -20,6 +20,7 @@ public class CarDriveAgent : Agent
     public Transform trace;
     public LinkedList<Transform> rewardGates;
     public LinkedListNode<Transform> currentGate;
+    Matrix4x4 m_TargetDirMatrix;
 
     public override void Initialize()
     {
@@ -39,13 +40,22 @@ public class CarDriveAgent : Agent
             }
         }
         currentGate = rewardGates.First;
+        for (int i = 0; i < 2; i++)
+        {
+            currentGate = currentGate.Next;
+        }
     }
 
     public override void OnEpisodeBegin()
     {
-        controller.SetRespawnpoint(finishLine.GetComponent<Collider2D>());
-        controller.Respawn();
         currentGate = rewardGates.First;
+        for (int i = 0; i < 2; i++)
+        {
+            currentGate = currentGate.Next;
+        }
+        // controller.SetRespawnpoint(finishLine.GetComponent<Collider2D>());
+        controller.SetRespawnpoint(currentGate.Previous.Value.GetComponent<Collider2D>());
+        controller.Respawn();
         // controller.offTrackCounter = 0;
         offTrackCounter = 0;
         if (offTrack != null)
@@ -58,28 +68,41 @@ public class CarDriveAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation((currentGate.Value.position - this.transform.position));
-        sensor.AddObservation(currentGate.Value.position);
+        // sensor.AddObservation((currentGate.Value.position - this.transform.position));
+        // Vector2 posCurrentGateV2 = new Vector2(currentGate.Value.position.x, currentGate.Value.position.y);
+        // sensor.AddObservation(posCurrentGateV2 - GetComponent<Rigidbody2D>().velocity);
         // Position of the next gate
-        sensor.AddObservation(currentGate.Next == null ? currentGate.List.First.Value.position : currentGate.Next.Value.position);
-        sensor.AddObservation(GetComponent<Rigidbody2D>().velocity);
+        // sensor.AddObservation(currentGate.Next == null ? currentGate.List.First.Value.position : currentGate.Next.Value.position);
         // Debug.DrawRay(this.transform.position, currentGate.Value.position - this.transform.position, Color.black);
         // Debug.DrawRay(this.transform.position, GetComponent<Rigidbody2D>().velocity, Color.blue);
         // Debug.DrawRay(this.transform.position, transform.up, Color.magenta);
+        sensor.AddObservation(currentGate.Value.localPosition);
+        sensor.AddObservation(GetComponent<Rigidbody2D>().velocity);
+        sensor.AddObservation(currentGate.Value.localPosition - this.transform.localPosition);
+        sensor.AddObservation(this.transform.localRotation);
+        sensor.AddObservation(this.transform.localPosition);
         sensor.AddObservation(this.transform.up);
-        sensor.AddObservation(this.transform.position);
+
+        Vector3 m_DirToTarget = currentGate.Value.localPosition - this.transform.localPosition;
+        Quaternion m_LookRotation = Quaternion.LookRotation(m_DirToTarget);
+        m_TargetDirMatrix = Matrix4x4.TRS(Vector3.zero, m_LookRotation, Vector3.one);
+
+        var bodyUpRelativeToLookRotationToTarget = m_TargetDirMatrix.inverse.MultiplyVector(this.transform.up);
+        sensor.AddObservation(bodyUpRelativeToLookRotationToTarget);
     }
 
     public override void OnActionReceived(float[] vectorAction)
     {
 
         // Save distance from gate before moving
-        float distance = (currentGate.Value.position - this.transform.position).sqrMagnitude;
+        // Vector2 posCurrentGateV2 = new Vector2(currentGate.Value.position.x, currentGate.Value.position.y);
+        // float distance = (posCurrentGateV2 - GetComponent<Rigidbody2D>().velocity).sqrMagnitude;
+        // float distance = (currentGate.Value.localPosition - this.transform.localPosition).sqrMagnitude;
         if (vectorAction[0] > 0) controller.Accelerate();
         else if (vectorAction[0] < 0) controller.Brake();
         // Debug.Log(vectorAction[0]);
         // Debug.Log(vectorAction[1]);
-        controller.Steer(vectorAction[1]);
+        controller.Steer(Mathf.Clamp(vectorAction[1], -1f, 1f));
 
         // if (controller.offTrackCounter >= maxNumTimesOffTrack)
         // if(offTrackCounter >= maxNumTimesOffTrack)
@@ -94,24 +117,41 @@ public class CarDriveAgent : Agent
         // AddReward(angle * (GetComponent<Rigidbody2D>().velocity)));
 
         // If new position is closer to rewardgate
-        // if ((this.transform.position - currentGate.Value.position).sqrMagnitude < distance)
+        // if ((posCurrentGateV2 - GetComponent<Rigidbody2D>().velocity).sqrMagnitude < distance)
+        // if ((currentGate.Value.localPosition - this.transform.localPosition).sqrMagnitude < distance)
         // {
-        //     AddReward(-0.01f);
+        //     AddReward(0.001f);
         // }
         // else
         // {
-        //     AddReward(-0.015f);
+        //     AddReward(-0.0015f);
         // }
+
+        float m_MovingTowardsDot = Vector3.Dot(GetComponent<Rigidbody2D>().velocity, (currentGate.Value.localPosition - this.transform.localPosition).normalized);
+        AddReward(0.03f * m_MovingTowardsDot);
+
+        float m_FacingDot = Vector3.Dot((currentGate.Value.localPosition - this.transform.localPosition).normalized, this.transform.up);
+        AddReward(0.01f * m_FacingDot);
+
         Debug.DrawLine(this.transform.position, currentGate.Value.position, Color.yellow);
         // If touched rewardGate -> reward and move to next gate
         if (GetComponent<Collider2D>().IsTouching(currentGate.Value.GetComponent<Collider2D>()))
         {
             // If gate == finish line more rewards
-            if (currentGate.Equals(currentGate.List.First)) AddReward(0.5f);
-            else AddReward(0.1f);
+            // if (currentGate.Equals(currentGate.List.First)) AddReward(0.5f);
+            AddReward(0.5f);
+            // else AddReward(0.1f);
             // After touching proceed to next gate
             currentGate = currentGate.Equals(currentGate.List.Last) ? currentGate.List.First : currentGate.Next;
         }
+
+        if (controller.State.GetType() == typeof(OffTrackState))
+        {
+            AddReward(-1f);
+            EndEpisode();
+        }
+
+        /*
         // Small reward if staying on track
         if (controller.State.GetType() == typeof(OnTrackState) ||
             GetComponent<Collider2D>().IsTouching(trackCollider))
@@ -135,17 +175,18 @@ public class CarDriveAgent : Agent
                 // Debug.Log(offTrackCounter);
                 if (++offTrackCounter >= maxNumTimesOffTrack)
                 {
-                    AddReward(-0.2f);
+                    AddReward(-0.5f);
                     EndEpisode();
                 }
             }
-        }
+        }*/
         //^^^^
         // if (controller.GetComponent<Collider2D>().IsTouching(trackCollider)) AddReward(0.001f);
         // else AddReward(-0.001f);
 
         // Punishment for taking time
-        if (maxStep > 0) AddReward(-1f / maxStep);
+        // if (maxStep > 0) AddReward(-1f / maxStep);
+        AddReward(-0.001f);
     }
 
     public override float[] Heuristic()
@@ -153,8 +194,10 @@ public class CarDriveAgent : Agent
         float[] actions = new float[2];
         if (Input.GetButton("Break")) actions[0] = -1;
         else if (Input.GetButton("Accelerate")) actions[0] = 1;
+        // actions[0] = 1f;
 
         actions[1] = Input.GetAxis("Horizontal");
+        // actions[1] = Conduire();
 
         return actions;
     }
@@ -189,5 +232,33 @@ public class CarDriveAgent : Agent
         {
             EndEpisode();
         }
+    }
+
+    private float Conduire()
+    {
+        //Calcul de l'angle du prochain noeud du tracé en fonction de la position du véhicule
+        Vector3 relativeVector = transform.InverseTransformPoint(currentGate.Value.position);
+        float newSteer = (relativeVector.x / relativeVector.magnitude) * 45f;
+        //Ajustement du virage
+        newSteer = AjusterVirage(newSteer);
+
+
+        return newSteer;
+    }
+
+    private float AjusterVirage(float newSteer)
+    {
+        if (InRange(newSteer, -.1f, .1f)) newSteer = 0;
+        else if (InRange(newSteer, -.5f, .5f)) newSteer = .05f * Mathf.Sign(newSteer);
+        else if (InRange(newSteer, -1f, 1f)) newSteer = .125f * Mathf.Sign(newSteer);
+        else if (InRange(newSteer, -1.5f, 1.5f)) newSteer = .25f * Mathf.Sign(newSteer);
+        else if (InRange(newSteer, -2f, 2f)) newSteer = .5f * Mathf.Sign(newSteer);
+
+        return newSteer;
+    }
+
+    private bool InRange(float value, float min, float max)
+    {
+        return min <= value && value <= max;
     }
 }
